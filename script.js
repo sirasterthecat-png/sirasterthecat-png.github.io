@@ -1,19 +1,9 @@
 (() => {
   'use strict';
 
-  const motionPreferenceKey = 'aster-motion';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const motionToggle = document.getElementById('motion-toggle');
   const sky = document.getElementById('starfield');
-  let userPaused = false;
-
-  // Storage can be unavailable in private browsing or local-file previews.
-  try {
-    userPaused = window.localStorage.getItem(motionPreferenceKey) === 'paused';
-  } catch (_) {
-    // Motion controls still work for this visit without persistence.
-  }
 
   // A small, repeatable starfield avoids layout work on pointer movement.
   let seed = 120935;
@@ -80,7 +70,7 @@
     for (const pulse of pulses.keys()) removePulse(pulse);
   };
 
-  const effectsPaused = () => userPaused || reducedMotion.matches;
+  const effectsPaused = () => reducedMotion.matches;
   // Safari and embedded iOS browsers vary in which pointer events they send.
   // All sources share a small coordinate/time dedupe to avoid double rings.
   let lastPulseAt = -Infinity;
@@ -88,7 +78,7 @@
   let lastTouchAt = -Infinity;
 
   const showPulse = (x, y) => {
-    if (userPaused || document.hidden || pulses.size >= 8) return;
+    if (document.hidden || pulses.size >= 8) return;
     if (!Number.isFinite(x) || !Number.isFinite(y)) return;
     const now = performance.now();
     if (lastPulsePosition && now - lastPulseAt < 120 && Math.hypot(
@@ -114,31 +104,9 @@
     document.documentElement.dataset.motion = state;
 
     if (paused || document.hidden || !finePointer.matches) clearSparkles();
-    if (userPaused || document.hidden || reducedMotion.matches) clearPulses();
+    if (document.hidden || reducedMotion.matches) clearPulses();
 
-    if (motionToggle) {
-      motionToggle.hidden = false;
-      motionToggle.disabled = reducedMotion.matches;
-      motionToggle.setAttribute('aria-pressed', String(paused));
-      motionToggle.textContent = reducedMotion.matches
-        ? 'Reduced motion on'
-        : userPaused ? 'Resume effects' : 'Pause effects';
-    }
   };
-
-  if (motionToggle) {
-    motionToggle.addEventListener('click', () => {
-      // The operating-system preference takes precedence over a saved choice.
-      if (reducedMotion.matches) return;
-      userPaused = !userPaused;
-      try {
-        window.localStorage.setItem(motionPreferenceKey, userPaused ? 'paused' : 'running');
-      } catch (_) {
-        // A blocked store must not prevent the current choice taking effect.
-      }
-      syncMotion();
-    });
-  }
 
   document.addEventListener('pointerdown', (event) => {
     if (event.isPrimary === false) return;
