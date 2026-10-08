@@ -45,6 +45,13 @@
   sparkleLayer.setAttribute('aria-hidden', 'true');
   document.body.appendChild(sparkleLayer);
 
+  // Pointer feedback is separate from the decorative mouse sparkles so it
+  // works on touch screens, too, without intercepting clicks or scrolling.
+  const pulseLayer = document.createElement('div');
+  pulseLayer.className = 'tap-pulses';
+  pulseLayer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(pulseLayer);
+
   const sparkles = new Map();
   let lastSparkleTime = -Infinity;
   let lastSparklePosition = null;
@@ -61,6 +68,18 @@
     lastSparkleTime = -Infinity;
   };
 
+  // Keep a bounded number of short-lived rings; timer cleanup is a fallback
+  // for browsers that suppress animationend during navigation or tab switches.
+  const pulses = new Map();
+  const removePulse = (pulse) => {
+    window.clearTimeout(pulses.get(pulse));
+    pulses.delete(pulse);
+    pulse.remove();
+  };
+  const clearPulses = () => {
+    for (const pulse of pulses.keys()) removePulse(pulse);
+  };
+
   const effectsPaused = () => userPaused || reducedMotion.matches;
 
   const syncMotion = () => {
@@ -70,6 +89,7 @@
     document.documentElement.dataset.motion = state;
 
     if (paused || document.hidden || !finePointer.matches) clearSparkles();
+    if (paused || document.hidden) clearPulses();
 
     if (motionToggle) {
       motionToggle.hidden = false;
@@ -94,6 +114,20 @@
       syncMotion();
     });
   }
+
+  document.addEventListener('pointerdown', (event) => {
+    if (effectsPaused() || document.hidden || !event.isPrimary || pulses.size >= 8) return;
+    // A context-menu click should not create a decorative tap effect.
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    const pulse = document.createElement('span');
+    pulse.className = 'tap-pulse';
+    pulse.style.left = `${event.clientX}px`;
+    pulse.style.top = `${event.clientY}px`;
+    pulse.addEventListener('animationend', () => removePulse(pulse), { once: true });
+    pulseLayer.appendChild(pulse);
+    pulses.set(pulse, window.setTimeout(() => removePulse(pulse), 700));
+  }, { passive: true });
 
   document.addEventListener('pointermove', (event) => {
     if (effectsPaused() || document.hidden || !finePointer.matches || event.pointerType !== 'mouse') return;
@@ -128,7 +162,10 @@
   }
 
   document.addEventListener('visibilitychange', syncMotion);
-  window.addEventListener('pagehide', clearSparkles);
+  window.addEventListener('pagehide', () => {
+    clearSparkles();
+    clearPulses();
+  });
   window.addEventListener('pageshow', syncMotion);
   syncMotion();
 })();
