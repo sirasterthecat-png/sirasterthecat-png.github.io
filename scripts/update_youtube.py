@@ -36,10 +36,14 @@ def build_feed(xml):
         raise ValueError("Unexpectedly large YouTube feed")
     root = ET.fromstring(xml)
     channel = root.findtext(f"{{{YT}}}channelId")
-    if channel != CHANNEL_ID:
+    # YouTube currently omits the leading "UC" on the feed-level channel ID.
+    # Individual entries retain the full canonical ID; verify those as well.
+    if channel not in (CHANNEL_ID, CHANNEL_ID[2:]):
         raise ValueError("YouTube feed channel ID mismatch")
     records = []
     for entry in root.findall(f"{{{ATOM}}}entry"):
+        if entry.findtext(f"{{{YT}}}channelId") != CHANNEL_ID:
+            continue
         vid = (entry.findtext(f"{{{YT}}}videoId") or "").strip()
         title = (entry.findtext(f"{{{ATOM}}}title") or "").strip()
         published = (entry.findtext(f"{{{ATOM}}}published") or "").strip()
