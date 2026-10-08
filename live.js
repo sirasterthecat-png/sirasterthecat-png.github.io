@@ -1,0 +1,323 @@
+(() => {
+  'use strict';
+
+  const CHANNEL_URL = 'https://www.youtube.com/@sirasterthecat/videos';
+  const TWITCH_URL = 'https://www.twitch.tv/sirasterthecat';
+  const safeVideoId = /^[a-zA-Z0-9_-]{11}$/;
+  const videoGrid = document.getElementById('recent-videos');
+  const updatedLabel = document.getElementById('youtube-updated');
+  const featuredLink = document.getElementById('featured-link');
+  const featuredTitle = document.getElementById('featured-title');
+  const featuredDescription = document.getElementById('featured-description');
+  const featuredWatchLink = document.getElementById('featured-watch-link');
+  const mobileMode = window.matchMedia('(hover: none), (pointer: coarse)');
+  const mediaEntries = new Map();
+  let visibleEntries = new Map();
+  let activePreview = null;
+  let pendingPreview = null;
+  let pendingTimer = 0;
+  let lastFeedSignature = '';
+
+  const videoURL = (id) => 'https://www.youtube.com/watch?v=' + id;
+  const thumbnailURL = (id) => 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
+
+  const thumbImage = (record) => {
+    const image = document.createElement('img');
+    image.className = 'video-thumb-image';
+    image.src = thumbnailURL(record.id);
+    image.alt = '';
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    return image;
+  };
+
+  const clearPending = () => {
+    window.clearTimeout(pendingTimer);
+    pendingTimer = 0;
+    pendingPreview = null;
+  };
+
+  const stopPreview = () => {
+    clearPending();
+    if (!activePreview) return;
+    const overlay = activePreview.querySelector('.video-preview');
+    if (overlay) overlay.replaceChildren();
+    activePreview = null;
+  };
+
+  const startPreview = (surface) => {
+    clearPending();
+    if (document.hidden || activePreview === surface) return;
+    if (activePreview) stopPreview();
+    const id = surface.dataset.videoId;
+    const holder = surface.querySelector('.video-preview');
+    if (!holder || !safeVideoId.test(id || '')) return;
+
+    const player = document.createElement('iframe');
+    const url = new URL('https://www.youtube-nocookie.com/embed/' + id);
+    url.searchParams.set('autoplay', '1');
+    url.searchParams.set('mute', '1');
+    url.searchParams.set('playsinline', '1');
+    url.searchParams.set('controls', '0');
+    url.searchParams.set('rel', '0');
+    player.src = url.href;
+    player.title = 'Muted preview of ' + (surface.dataset.videoTitle || 'YouTube video');
+    player.tabIndex = -1;
+    player.setAttribute('aria-hidden', 'true');
+    player.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+    player.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    player.addEventListener('error', () => {
+      if (activePreview === surface) stopPreview();
+    }, { once: true });
+    holder.appendChild(player);
+    activePreview = surface;
+  };
+
+  const schedulePreview = (surface, delay) => {
+    if (document.hidden || !surface || !surface.dataset.videoId) return;
+    if (activePreview === surface || pendingPreview === surface) return;
+    clearPending();
+    pendingPreview = surface;
+    pendingTimer = window.setTimeout(() => {
+      if (pendingPreview === surface) startPreview(surface);
+    }, delay);
+  };
+
+  let observer = null;
+  const chooseMobilePreview = () => {
+    if (!mobileMode.matches || document.hidden) return;
+    const candidates = [...visibleEntries.entries()]
+      .filter(([element, ratio]) => element.isConnected && ratio >= .72)
+      .sort((a, b) => b[1] - a[1]);
+    const best = candidates.length ? candidates[0][0] : null;
+    if (activePreview && (!visibleEntries.has(activePreview) ||
+        visibleEntries.get(activePreview) < .55 || (best && best !== activePreview))) {
+      stopPreview();
+    }
+    if (best) schedulePreview(best, 1900);
+    else clearPending();
+  };
+
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visibleEntries.set(entry.target, entry.intersectionRatio);
+        else visibleEntries.delete(entry.target);
+      }
+      chooseMobilePreview();
+    }, { threshold: [0, .3, .55, .72, .85, 1] });
+  }
+
+  const attachPreview = (surface, record) => {
+    surface.dataset.videoId = record.id;
+    surface.dataset.videoTitle = record.title;
+    const overlay = document.createElement('span');
+    overlay.className = 'video-preview';
+    overlay.setAttribute('aria-hidden', 'true');
+    surface.appendChild(overlay);
+    mediaEntries.set(surface, record.id);
+    if (observer) observer.observe(surface);
+    surface.addEventListener('pointerenter', (event) => {
+      if (!mobileMode.matches && event.pointerType !== 'touch') schedulePreview(surface, 650);
+    });
+    surface.addEventListener('pointerleave', () => {
+      if (pendingPreview === surface) clearPending();
+      if (activePreview === surface && !mobileMode.matches) stopPreview();
+    });
+    surface.addEventListener('focusin', () => {
+      // Keyboard visitors should retain full control, without surprise playback.
+      if (activePreview === surface) stopPreview();
+    });
+  };
+
+  const dateLabel = (value) => {
+    const date = new Date(value);
+    if (!Number.isFinite(date.valueOf())) return 'Recent upload';
+    return new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+  };
+
+  const makeVideoCard = (video) => {
+    const article = document.createElement('article');
+    article.className = 'video-slot video-card';
+    const media = document.createElement('a');
+    media.className = 'video-thumb-link';
+    media.href = videoURL(video.id);
+    media.target = '_blank';
+    media.rel = 'noopener noreferrer';
+    media.setAttribute('aria-label', 'Watch ' + video.title + ' on YouTube');
+    media.appendChild(thumbImage(video));
+    const shine = document.createElement('span');
+    shine.className = 'video-thumb-shine';
+    shine.setAttribute('aria-hidden', 'true');
+    media.appendChild(shine);
+    const hint = document.createElement('span');
+    hint.className = 'video-preview-hint';
+    hint.textContent = 'Preview · muted';
+    media.appendChild(hint);
+    attachPreview(media, video);
+
+    const copy = document.createElement('div');
+    copy.className = 'video-copy';
+    const heading = document.createElement('h3');
+    const link = document.createElement('a');
+    link.href = videoURL(video.id);
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = video.title;
+    heading.appendChild(link);
+    const date = document.createElement('p');
+    date.className = 'video-info';
+    date.textContent = 'Published ' + dateLabel(video.published);
+    copy.append(heading, date);
+    article.append(media, copy);
+    return article;
+  };
+
+  const renderFeatured = (video) => {
+    if (!featuredLink || !featuredTitle || !featuredDescription || !featuredWatchLink) return;
+    featuredLink.replaceChildren();
+    featuredLink.href = videoURL(video.id);
+    featuredLink.target = '_blank';
+    featuredLink.rel = 'noopener noreferrer';
+    featuredLink.setAttribute('aria-label', 'Watch latest public upload: ' + video.title);
+    featuredLink.appendChild(thumbImage(video));
+    const label = document.createElement('span');
+    label.className = 'feature-label';
+    label.textContent = 'LATEST PUBLIC UPLOAD';
+    featuredLink.appendChild(label);
+    const shine = document.createElement('span');
+    shine.className = 'video-thumb-shine';
+    shine.setAttribute('aria-hidden', 'true');
+    featuredLink.appendChild(shine);
+    attachPreview(featuredLink, video);
+    featuredTitle.textContent = video.title;
+    featuredDescription.textContent = 'The newest public upload from Aster. Published ' + dateLabel(video.published) + '.';
+    featuredWatchLink.href = videoURL(video.id);
+    featuredWatchLink.target = '_blank';
+    featuredWatchLink.rel = 'noopener noreferrer';
+    featuredWatchLink.textContent = 'Watch this video on YouTube ↗';
+  };
+
+  const readFeed = async () => {
+    if (!videoGrid) return;
+    try {
+      const response = await fetch('data/latest.json?t=' + Date.now(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('YouTube feed not available');
+      const payload = await response.json();
+      if (payload.channelId !== 'UCWnTWOcecxIeXBY5UNfw16Q' || !Array.isArray(payload.videos)) {
+        throw new Error('Unexpected feed content');
+      }
+      const videos = payload.videos.filter((item) =>
+        item && typeof item.id === 'string' && safeVideoId.test(item.id) &&
+        typeof item.title === 'string' && item.title.trim() &&
+        typeof item.published === 'string'
+      ).slice(0, 6);
+      if (!videos.length) {
+        if (updatedLabel) updatedLabel.textContent = 'Latest uploads are being connected. Browse YouTube ↗';
+        return;
+      }
+      const signature = videos.map((item) => item.id).join(',');
+      if (lastFeedSignature !== signature) {
+        stopPreview();
+        if (observer) observer.disconnect();
+        visibleEntries = new Map();
+        mediaEntries.clear();
+        const cards = document.createDocumentFragment();
+        for (const video of videos) cards.appendChild(makeVideoCard(video));
+        videoGrid.replaceChildren(cards);
+        renderFeatured(videos[0]);
+        lastFeedSignature = signature;
+      }
+      if (updatedLabel) {
+        const stamp = new Date(payload.updatedAt);
+        updatedLabel.textContent = Number.isFinite(stamp.valueOf())
+          ? 'Public feed refreshed ' + new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(stamp)
+          : 'Latest public YouTube videos';
+      }
+    } catch (error) {
+      if (updatedLabel) updatedLabel.textContent = lastFeedSignature
+        ? 'Showing last available public uploads'
+        : 'Live feed unavailable · Browse YouTube';
+      // Preserve existing cards during a temporary network outage.
+    }
+  };
+
+  readFeed();
+  window.setInterval(() => { if (!document.hidden) readFeed(); }, 5 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopPreview();
+    else { readFeed(); chooseMobilePreview(); }
+  });
+  window.addEventListener('pagehide', stopPreview);
+  mobileMode.addEventListener?.('change', () => {
+    stopPreview();
+    chooseMobilePreview();
+  });
+
+  // Official Twitch player receives Twitch.Player.ONLINE and OFFLINE events.
+  // We never fabricate a LIVE claim from a guess, or require API credentials.
+  const twitchPlayerNode = document.getElementById('twitch-player');
+  const twitchStatus = document.getElementById('twitch-live-label');
+  const twitchNote = document.getElementById('twitch-status-note');
+  const twitchHeader = document.getElementById('twitch-header-status');
+  let twitchEventObserved = false;
+
+  const setTwitchState = (state) => {
+    if (!twitchStatus || !twitchNote || !twitchHeader) return;
+    const live = state === 'live';
+    twitchStatus.classList.toggle('is-live', live);
+    twitchHeader.classList.toggle('is-live', live);
+    if (live) {
+      twitchStatus.textContent = 'LIVE on Twitch';
+      twitchHeader.textContent = '● LIVE';
+      twitchNote.textContent = 'Aster is streaming now. Watch in the player or open Twitch.';
+    } else if (state === 'offline') {
+      twitchStatus.textContent = 'Currently offline';
+      twitchHeader.textContent = 'Offline';
+      twitchNote.textContent = 'Aster is not live according to the Twitch player. Follow to catch the next stream.';
+    } else {
+      twitchStatus.textContent = 'Check Aster on Twitch';
+      twitchHeader.textContent = 'Check live status';
+      twitchNote.textContent = 'Live status could not be verified here. Open the official Twitch channel for the latest.';
+    }
+  };
+
+  if (twitchPlayerNode) {
+    const loader = document.createElement('script');
+    loader.src = 'https://player.twitch.tv/js/embed/v1.js';
+    loader.async = true;
+    loader.onload = () => {
+      try {
+        if (!window.Twitch || !window.Twitch.Player) throw new Error('Twitch unavailable');
+        const player = new window.Twitch.Player('twitch-player', {
+          channel: 'sirasterthecat',
+          width: '100%',
+          height: 300,
+          parent: [window.location.hostname],
+          autoplay: false,
+          muted: true,
+        });
+        player.addEventListener(window.Twitch.Player.ONLINE, () => {
+          twitchEventObserved = true;
+          setTwitchState('live');
+        });
+        player.addEventListener(window.Twitch.Player.OFFLINE, () => {
+          twitchEventObserved = true;
+          setTwitchState('offline');
+        });
+        player.addEventListener(window.Twitch.Player.READY, () => {
+          if (!twitchEventObserved && twitchStatus) {
+            twitchStatus.textContent = 'Watching for stream status…';
+          }
+        });
+        window.setTimeout(() => {
+          if (!twitchEventObserved) setTwitchState('unknown');
+        }, 12000);
+      } catch (_) {
+        setTwitchState('unknown');
+      }
+    };
+    loader.onerror = () => setTwitchState('unknown');
+    document.head.appendChild(loader);
+  }
+})();
