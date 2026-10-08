@@ -81,6 +81,31 @@
   };
 
   const effectsPaused = () => userPaused || reducedMotion.matches;
+  // Safari and embedded iOS browsers vary in which pointer events they send.
+  // All sources share a small coordinate/time dedupe to avoid double rings.
+  let lastPulseAt = -Infinity;
+  let lastPulsePosition = null;
+  let lastTouchAt = -Infinity;
+
+  const showPulse = (x, y) => {
+    if (userPaused || document.hidden || pulses.size >= 8) return;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    const now = performance.now();
+    if (lastPulsePosition && now - lastPulseAt < 120 && Math.hypot(
+      x - lastPulsePosition.x, y - lastPulsePosition.y
+    ) < 24) return;
+
+    lastPulseAt = now;
+    lastPulsePosition = { x, y };
+    const staticFeedback = reducedMotion.matches;
+    const pulse = document.createElement('span');
+    pulse.className = staticFeedback ? 'tap-pulse tap-pulse-static' : 'tap-pulse';
+    pulse.style.left = `${x}px`;
+    pulse.style.top = `${y}px`;
+    pulse.addEventListener('animationend', () => removePulse(pulse), { once: true });
+    pulseLayer.appendChild(pulse);
+    pulses.set(pulse, window.setTimeout(() => removePulse(pulse), staticFeedback ? 250 : 700));
+  };
 
   const syncMotion = () => {
     const paused = effectsPaused();
@@ -89,7 +114,7 @@
     document.documentElement.dataset.motion = state;
 
     if (paused || document.hidden || !finePointer.matches) clearSparkles();
-    if (paused || document.hidden) clearPulses();
+    if (userPaused || document.hidden || reducedMotion.matches) clearPulses();
 
     if (motionToggle) {
       motionToggle.hidden = false;
@@ -116,17 +141,26 @@
   }
 
   document.addEventListener('pointerdown', (event) => {
-    if (effectsPaused() || document.hidden || !event.isPrimary || pulses.size >= 8) return;
-    // A context-menu click should not create a decorative tap effect.
+    if (event.isPrimary === false) return;
     if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.pointerType === 'touch') lastTouchAt = performance.now();
+    showPulse(event.clientX, event.clientY);
+  }, { passive: true });
 
-    const pulse = document.createElement('span');
-    pulse.className = 'tap-pulse';
-    pulse.style.left = `${event.clientX}px`;
-    pulse.style.top = `${event.clientY}px`;
-    pulse.addEventListener('animationend', () => removePulse(pulse), { once: true });
-    pulseLayer.appendChild(pulse);
-    pulses.set(pulse, window.setTimeout(() => removePulse(pulse), 700));
+  // touchstart is an explicit fallback for Safari/iOS WebViews. It also
+  // handles devices where PointerEvent exists but pointerdown is not fired.
+  document.addEventListener('touchstart', (event) => {
+    if ((event.touches && event.touches.length > 1) ||
+        !event.changedTouches || event.changedTouches.length !== 1) return;
+    lastTouchAt = performance.now();
+    const point = event.changedTouches[0];
+    showPulse(point.clientX, point.clientY);
+  }, { passive: true });
+
+  // Older browsers may have mouse events without Pointer Events.
+  document.addEventListener('mousedown', (event) => {
+    if (event.button !== 0 || performance.now() - lastTouchAt < 900) return;
+    showPulse(event.clientX, event.clientY);
   }, { passive: true });
 
   document.addEventListener('pointermove', (event) => {

@@ -134,7 +134,7 @@ footer div p { margin-top: 8px; }
 .cursor-sparkles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 10; }
 .cursor-sparkle { position: absolute; color: var(--fur); font-size: 12px; line-height: 1; pointer-events: none; animation: sparkle-drift .75s ease-out forwards; }
 /* Small, subtle touch/click ring inspired by the reference tap indicator. */
-.tap-pulses { position: fixed; inset: 0; z-index: 11; pointer-events: none; overflow: hidden; }
+.tap-pulses { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
 .tap-pulse {
   position: absolute; width: 22px; height: 22px; border-radius: 50%;
   border: 1.5px solid rgba(195, 226, 254, .76);
@@ -147,8 +147,15 @@ footer div p { margin-top: 8px; }
   65% { opacity: .45; }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(2.05); }
 }
-body[data-motion="paused"] .tap-pulses { display: none; }
-@media (prefers-reduced-motion: reduce) { .tap-pulses { display: none; } }
+/* A stationary flash gives accessible tap feedback with Reduce Motion enabled. */
+.tap-pulse-static {
+  animation: none !important;
+  opacity: .8;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tap-pulse { animation: none !important; }
+}
 
 @keyframes twinkle { from { opacity: .18; } to { opacity: var(--star-opacity, .68); } }
 @keyframes cloud-drift { from { transform: translateX(-2%); } to { transform: translateX(2%); } }
