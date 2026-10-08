@@ -363,3 +363,77 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 @media(prefers-reduced-motion:reduce) {
   .account-links a { transition:none; }
 }
+
+/* Format-specific uploads: full episodes as a vertical list, Shorts as tiles. */
+.longform-list {
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.longform-list .video-slot.video-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 32%) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 36px);
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #6396c45a;
+  border-radius: 7px;
+  background: linear-gradient(100deg, #17365a82, #091d3566 80%);
+}
+.longform-list .video-thumb-link {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.longform-list .video-card .video-copy { padding: 4px 0; }
+.longform-list .video-card .video-copy h3 {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.4;
+}
+.longform-list .video-card .video-copy p {
+  margin-top: 10px;
+  font-size: .82rem;
+}
+
+/* A browseable strip of genuinely vertical Shorts thumbnails. */
+.shorts-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.shorts-grid .video-slot.video-card {
+  display: block;
+  min-width: 0;
+  padding: 0 0 12px;
+}
+.shorts-grid .video-thumb-link {
+  aspect-ratio: 9 / 16;
+  border-color: #76fff846;
+}
+.shorts-grid .video-thumb-image {
+  object-fit: cover;
+}
+.shorts-grid .video-card .video-copy { padding: 10px 2px 0; }
+.shorts-grid .video-card .video-copy h3 { font-size: .87rem; line-height: 1.36; }
+.shorts-grid .video-card .video-copy p { font-size: .7rem; margin-top: 6px; }
+.shorts-grid .video-preview-hint { left: 6px; bottom: 6px; padding: 3px 5px; font-size: .6rem; }
+
+@media (max-width: 1020px) {
+  .shorts-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .shorts-grid .video-card .video-copy h3 { font-size: .95rem; }
+}
+@media (max-width: 680px) {
+  .longform-list { gap: 12px; }
+  .longform-list .video-slot.video-card {
+    grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    padding: 10px;
+  }
+  .longform-list .video-card .video-copy { padding: 1px 0; }
+  .longform-list .video-card .video-copy h3 { font-size: .83rem; line-height: 1.33; }
+  .longform-list .video-card .video-copy p { margin-top: 6px; font-size: .7rem; }
+  .shorts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
+  .shorts-grid .video-slot.video-card { display: block; padding-bottom: 10px; }
+  .shorts-grid .video-card .video-copy { padding-top: 8px; }
+  .shorts-grid .video-card .video-copy h3 { font-size: .81rem; }
+  .shorts-grid .video-preview-hint { font-size: .57rem; }
+}
