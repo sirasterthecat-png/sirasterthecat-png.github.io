@@ -1,14 +1,7 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-08T18:17:52+00:00",
-  "videos": [
-    {
-      "id": "gHIVJ1O2zio",
-      "title": "Let's Go Get Some Hookers",
-      "published": "2026-10-08T15:00:36+00:00",
-      "url": "https://www.youtube.com/watch?v=gHIVJ1O2zio",
-      "thumbnail": "https://i.ytimg.com/vi/gHIVJ1O2zio/hqdefault.jpg"
-    },
+  "updatedAt": "2026-10-08T18:50:26+00:00",
+  "longform": [
     {
       "id": "5BsV3A75U0A",
       "title": "Fallin' To My Knees~ | Fall Guys Ep 2",
@@ -17,32 +10,83 @@
       "thumbnail": "https://i.ytimg.com/vi/5BsV3A75U0A/hqdefault.jpg"
     },
     {
+      "id": "mNY3hBC2tjU",
+      "title": "Off in the Great Beyond... | No Man's Sky Ep 5",
+      "published": "2026-09-29T15:00:11+00:00",
+      "url": "https://www.youtube.com/watch?v=mNY3hBC2tjU",
+      "thumbnail": "https://i.ytimg.com/vi/mNY3hBC2tjU/hqdefault.jpg"
+    },
+    {
+      "id": "N5HT9HtczDI",
+      "title": "Settling In~ | The Forest Ep 2",
+      "published": "2026-09-25T15:00:22+00:00",
+      "url": "https://www.youtube.com/watch?v=N5HT9HtczDI",
+      "thumbnail": "https://i.ytimg.com/vi/N5HT9HtczDI/hqdefault.jpg"
+    },
+    {
+      "id": "3IeobsUDlrE",
+      "title": "Back To PARADISE!! | No Man's Sky Ep 4",
+      "published": null,
+      "url": "https://www.youtube.com/watch?v=3IeobsUDlrE",
+      "thumbnail": "https://i.ytimg.com/vi/3IeobsUDlrE/hqdefault.jpg"
+    },
+    {
+      "id": "kCQ3QjBGdnQ",
+      "title": "FALL GUYS IN 2026?? | Fall Guys Ep 1",
+      "published": null,
+      "url": "https://www.youtube.com/watch?v=kCQ3QjBGdnQ",
+      "thumbnail": "https://i.ytimg.com/vi/kCQ3QjBGdnQ/hqdefault.jpg"
+    },
+    {
+      "id": "05H6nQ8lXF4",
+      "title": "Aster's Disaster... | No Man's Sky Ep 3",
+      "published": null,
+      "url": "https://www.youtube.com/watch?v=05H6nQ8lXF4",
+      "thumbnail": "https://i.ytimg.com/vi/05H6nQ8lXF4/hqdefault.jpg"
+    }
+  ],
+  "shorts": [
+    {
+      "id": "gHIVJ1O2zio",
+      "title": "Let's Go Get Some Hookers",
+      "published": "2026-10-08T15:00:36+00:00",
+      "url": "https://www.youtube.com/shorts/gHIVJ1O2zio",
+      "thumbnail": "https://i.ytimg.com/vi/gHIVJ1O2zio/oar2.jpg"
+    },
+    {
       "id": "wHrcknl1WK8",
       "title": "This Game Is Bad",
       "published": "2026-10-07T15:00:17+00:00",
-      "url": "https://www.youtube.com/watch?v=wHrcknl1WK8",
-      "thumbnail": "https://i.ytimg.com/vi/wHrcknl1WK8/hqdefault.jpg"
+      "url": "https://www.youtube.com/shorts/wHrcknl1WK8",
+      "thumbnail": "https://i.ytimg.com/vi/wHrcknl1WK8/oar2.jpg"
     },
     {
       "id": "ZuThq6tpTUY",
       "title": "Please Don't Clip It",
       "published": "2026-10-06T15:00:39+00:00",
-      "url": "https://www.youtube.com/watch?v=ZuThq6tpTUY",
-      "thumbnail": "https://i.ytimg.com/vi/ZuThq6tpTUY/hqdefault.jpg"
+      "url": "https://www.youtube.com/shorts/ZuThq6tpTUY",
+      "thumbnail": "https://i.ytimg.com/vi/ZuThq6tpTUY/oar2.jpg"
     },
     {
       "id": "c58Wmid1WHo",
       "title": "Why Are We Here",
       "published": "2026-10-05T15:00:23+00:00",
-      "url": "https://www.youtube.com/watch?v=c58Wmid1WHo",
-      "thumbnail": "https://i.ytimg.com/vi/c58Wmid1WHo/hqdefault.jpg"
+      "url": "https://www.youtube.com/shorts/c58Wmid1WHo",
+      "thumbnail": "https://i.ytimg.com/vi/c58Wmid1WHo/oar2.jpg"
     },
     {
       "id": "4L4-7wHLmJ8",
       "title": "Why Is There So Much Color",
       "published": "2026-10-04T15:00:10+00:00",
-      "url": "https://www.youtube.com/watch?v=4L4-7wHLmJ8",
-      "thumbnail": "https://i.ytimg.com/vi/4L4-7wHLmJ8/hqdefault.jpg"
+      "url": "https://www.youtube.com/shorts/4L4-7wHLmJ8",
+      "thumbnail": "https://i.ytimg.com/vi/4L4-7wHLmJ8/oar2.jpg"
+    },
+    {
+      "id": "8C5GW7wI_TY",
+      "title": "Christian Gambling",
+      "published": "2026-10-01T15:00:12+00:00",
+      "url": "https://www.youtube.com/shorts/8C5GW7wI_TY",
+      "thumbnail": "https://i.ytimg.com/vi/8C5GW7wI_TY/oar2.jpg"
     }
   ]
 }
