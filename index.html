@@ -16,22 +16,29 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"ProfilePage","name":"SirAsterTheCat — Aster | Gaming Under the Stars","url":"https://sirasterthecat-png.github.io/","mainEntity":{"@type":"Person","name":"SirAsterTheCat","alternateName":"Aster","description":"Furry gaming creator sharing playthroughs, highlights, Shorts, and streams.","url":"https://sirasterthecat-png.github.io/","sameAs":["https://www.youtube.com/@sirasterthecat"]}}
   </script>
-  <link rel="stylesheet" href="styles.css?v=20261008-touchfix-2" />
-  <script src="script.js?v=20261008-touchfix-2" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261008-live-v1" />
+  <script src="script.js?v=20261008-live-v1" defer></script>
+  <script src="live.js?v=20261008-live-v1" defer></script>
 </head>
 <body data-motion="paused">
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="night-clouds" aria-hidden="true"><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div></div>
   <div id="starfield" class="starfield" aria-hidden="true"></div>
   <div class="shell">
-    <div class="preview-bar"><span><span class="status-dot" aria-hidden="true"></span> Official creator site · Public beta</span><button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" hidden>Pause effects</button></div>
+    <div class="preview-bar"><span><span class="status-dot" aria-hidden="true"></span> Official creator site · Public beta</span></div>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="SirAsterTheCat home"><span class="brand-star" aria-hidden="true">✧</span>SirAster<span>TheCat</span></a>
       <nav class="navlinks" aria-label="Primary">
         <a href="#videos">Videos</a><a href="#shorts">Shorts</a><a href="#series">Explore</a><a href="#about">About</a>
       </nav>
-      <a class="button header-cta" href="https://www.youtube.com/@sirasterthecat">YouTube <span aria-hidden="true">↗</span></a>
+      <a class="button header-cta" href="https://www.youtube.com/@sirasterthecat">Watch videos <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="account-links" aria-label="Aster's official accounts">
+      <a href="https://www.youtube.com/@sirasterthecat" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶</span> YouTube</a>
+      <a href="https://www.twitch.tv/sirasterthecat" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">◈</span> Twitch <span class="twitch-header-status" id="twitch-header-status" aria-live="polite">Check live status</span></a>
+      <a href="https://bsky.app/profile/sirasterthecat.bsky.social" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">✦</span> Bluesky</a>
+      <a href="https://discord.gg/AVGKWUkeq8" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">☾</span> Discord</a>
+    </nav>
     <main id="main" tabindex="-1">
       <section class="hero oot-frame" id="top" aria-labelledby="welcome-title">
         <div class="glass-ripples" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -39,18 +46,36 @@
         <div class="hero-visual"><div class="moon" aria-hidden="true"></div><img src="assets/SirAsterCompressed.png" width="1486" height="1800" fetchpriority="high" alt="Aster, a blue cat wearing a top hat and monocle" /><span class="art-star" aria-hidden="true">✧</span></div>
         <div class="hero-copy"><p class="tagline">Gaming adventures under the stars.</p><p class="intro">I’m <strong>SirAsterTheCat</strong>—a furry gaming creator sharing playthroughs, ridiculous moments, and good company. Pull up a chair and stay a while.</p><div class="hero-actions"><a class="button button-primary" href="https://www.youtube.com/@sirasterthecat"><span aria-hidden="true">▶</span> Watch on YouTube <span aria-hidden="true">↗</span></a><a class="text-link" href="#start">Take a look around <span aria-hidden="true">↓</span></a></div><p class="identity">SirAsterTheCat <span aria-hidden="true">✦</span> You can call me Aster.</p></div>
       </section>
+      <section class="section twitch-section" id="live" aria-labelledby="live-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Come hang out live</p><h2 id="live-title">Aster on Twitch.</h2></div>
+          <a class="text-link section-link" href="https://www.twitch.tv/sirasterthecat" target="_blank" rel="noopener noreferrer">Open Twitch <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="twitch-panel oot-frame">
+          <div class="twitch-intro">
+            <p class="eyebrow">Stream updates</p>
+            <div id="twitch-live-label" class="twitch-live-label" role="status" aria-live="polite">Checking Twitch…</div>
+            <p id="twitch-status-note">The official Twitch player updates this status when stream events are available.</p>
+            <a class="button" href="https://www.twitch.tv/sirasterthecat" target="_blank" rel="noopener noreferrer">Watch or follow on Twitch <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="twitch-player-scroller" aria-label="Official Twitch video player, horizontally scrollable on very small phones">
+            <div id="twitch-player" class="twitch-player"></div>
+          </div>
+        </div>
+        <p class="twitch-disclaimer">Stream status is reported by the Twitch player while this page is open. Mobile playback may require a tap.</p>
+      </section>
       <section class="section" id="start" aria-labelledby="start-title">
         <div class="section-heading"><div><p class="eyebrow">Your first stop</p><h2 id="start-title">A good place to begin.</h2></div><span class="section-number" aria-hidden="true">01 / WATCH</span></div>
         <div class="feature oot-frame">
           <div class="glass-ripples" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="feature-placeholder"><span class="placeholder-orbit" aria-hidden="true">✦</span><span class="feature-label">VIDEOS · HIGHLIGHTS · PLAYTHROUGHS</span></div>
-          <div class="feature-copy"><p class="eyebrow">Your first stop</p><h3>Gaming under the stars.</h3><p>See what Aster is playing, revisit a memorable moment, or settle in for a series on the official YouTube channel.</p><a class="text-link" href="https://www.youtube.com/@sirasterthecat/videos">Browse Aster's videos <span aria-hidden="true">↗</span></a></div>
+          <a id="featured-link" class="feature-placeholder featured-media" href="https://www.youtube.com/@sirasterthecat/videos" aria-label="Browse Aster's latest YouTube videos"><span class="placeholder-orbit" aria-hidden="true">✦</span><span class="feature-label">VIDEOS · HIGHLIGHTS · PLAYTHROUGHS</span></a>
+          <div class="feature-copy"><p class="eyebrow">Your first stop</p><h3 id="featured-title">Gaming under the stars.</h3><p id="featured-description">See what Aster is playing, revisit a memorable moment, or settle in for a series on the official YouTube channel.</p><a class="text-link" id="featured-watch-link" href="https://www.youtube.com/@sirasterthecat/videos">Browse Aster's videos <span aria-hidden="true">↗</span></a></div>
         </div>
       </section>
       <section class="section" id="videos" aria-labelledby="videos-title">
         <div class="section-heading"><div><p class="eyebrow">From the channel</p><h2 id="videos-title">Find your next adventure.</h2></div><a class="text-link section-link" href="https://www.youtube.com/@sirasterthecat/videos">All uploads <span aria-hidden="true">↗</span></a></div>
-        <p class="section-intro">Playthroughs, highlights, and little moments along the way.</p>
-        <div class="video-grid">
+        <p class="section-intro">Playthroughs, highlights, and little moments along the way. <span id="youtube-updated" class="feed-timestamp" role="status" aria-live="polite">Loading latest public uploads…</span></p>
+        <div class="video-grid" id="recent-videos" aria-label="Latest public YouTube videos">
           <a class="video-slot" href="https://www.youtube.com/@sirasterthecat/videos"><div class="thumbnail-placeholder" aria-hidden="true"><span>01</span><span>WATCH VIDEOS ↗</span></div><div class="video-copy"><h3>Gaming videos</h3><p>Browse playthroughs, highlights, and adventures on YouTube.</p></div></a>
           <a class="video-slot" href="https://www.youtube.com/@sirasterthecat/playlists"><div class="thumbnail-placeholder" aria-hidden="true"><span>02</span><span>FIND A SERIES ↗</span></div><div class="video-copy"><h3>Playlists &amp; series</h3><p>Pick a game and start from the beginning.</p></div></a>
           <a class="video-slot" href="https://www.youtube.com/@sirasterthecat/shorts"><div class="thumbnail-placeholder" aria-hidden="true"><span>03</span><span>EXPLORE SHORTS ↗</span></div><div class="video-copy"><h3>Shorts &amp; clips</h3><p>Catch a short, funny moment whenever you have a minute.</p></div></a>
@@ -66,7 +91,7 @@
       <section class="about oot-frame" id="about" aria-labelledby="about-title">
         <div class="about-art"><img src="assets/AsterHappy.PNG" width="500" height="500" loading="lazy" decoding="async" alt="Aster smiling" /></div><div class="about-copy"><p class="eyebrow">The cat behind the channel</p><h2 id="about-title">Nice to meet you.</h2><p>I’m Aster—a blue-furred gamer who loves sharing stories, making people laugh, and building a friendly place to unwind after a long day.</p></div><span class="about-star" aria-hidden="true">✦</span>
       </section>
-      <section class="social" aria-labelledby="social-title"><div><p class="eyebrow">Find me online</p><h2 id="social-title">Keep in touch.</h2><p>Catch the channel’s newest gaming adventures on YouTube.</p></div><a class="button button-primary" href="https://www.youtube.com/@sirasterthecat">SirAsterTheCat on YouTube <span aria-hidden="true">↗</span></a></section>
+      <section class="social" aria-labelledby="social-title"><div><p class="eyebrow">Find me online</p><h2 id="social-title">Keep in touch.</h2><p>Catch new videos and join live streams using the official links above.</p></div><a class="button button-primary" href="https://www.twitch.tv/sirasterthecat" target="_blank" rel="noopener noreferrer">Join Aster on Twitch <span aria-hidden="true">↗</span></a></section>
     </main>
     <footer><div><a class="footer-brand" href="#top">SirAsterTheCat <span aria-hidden="true">✧</span></a><p>© 2026 SirAsterTheCat. Official website · Public beta.</p></div><p>Original Aster character artwork.<br />Sky &amp; glass made with CSS. No AI-generated artwork.</p></footer>
   </div>
