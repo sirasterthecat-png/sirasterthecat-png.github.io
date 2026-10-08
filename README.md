@@ -6,7 +6,7 @@ The **public deployment** of Aster's starry-night gaming homepage, based on the 
 
 ## Current features
 - Links to Aster's official YouTube, Twitch, Bluesky and Discord near the top.
-- Six recent public videos and thumbnails, fetched from the official YouTube Atom feed through `scripts/update_youtube.py`.
+- Two separate, automatically refreshed sections: the newest six long-form uploads in a vertical list, and the newest six Shorts in a portrait gallery. Both are classified using the channel's official Videos and Shorts tabs through `scripts/update_youtube.py` (with Atom-feed dates when available).
 - A scheduled GitHub Actions feed refresh roughly every 30 minutes; site visitors check the generated JSON about every five minutes. Schedules may be delayed.
 - Muted YouTube player previews after desktop hover or mobile viewing dwell. Autoplay is not guaranteed on every browser or iPhone.
 - Twitch's official embedded player, with online/offline labels only after its player reports the event. Twitch cannot provide guaranteed background status or push notifications on this static site.
