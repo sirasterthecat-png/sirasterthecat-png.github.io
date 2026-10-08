@@ -5,7 +5,9 @@
   const TWITCH_URL = 'https://www.twitch.tv/sirasterthecat';
   const safeVideoId = /^[a-zA-Z0-9_-]{11}$/;
   const videoGrid = document.getElementById('recent-videos');
+  const shortsGrid = document.getElementById('recent-shorts');
   const updatedLabel = document.getElementById('youtube-updated');
+  const shortsUpdatedLabel = document.getElementById('shorts-updated');
   const featuredLink = document.getElementById('featured-link');
   const featuredTitle = document.getElementById('featured-title');
   const featuredDescription = document.getElementById('featured-description');
@@ -18,13 +20,21 @@
   let pendingTimer = 0;
   let lastFeedSignature = '';
 
-  const videoURL = (id) => 'https://www.youtube.com/watch?v=' + id;
-  const thumbnailURL = (id) => 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
+  const videoURL = (id, kind = 'longform') => kind === 'shorts'
+    ? 'https://www.youtube.com/shorts/' + id
+    : 'https://www.youtube.com/watch?v=' + id;
+  // YouTube's oar2 image is portrait artwork for Shorts, not a stretched
+  // landscape thumbnail. Fall back when it is unavailable for a new upload.
+  const thumbnailURL = (id, kind = 'longform') =>
+    'https://i.ytimg.com/vi/' + id + (kind === 'shorts' ? '/oar2.jpg' : '/hqdefault.jpg');
 
-  const thumbImage = (record) => {
+  const thumbImage = (record, kind = 'longform') => {
     const image = document.createElement('img');
     image.className = 'video-thumb-image';
-    image.src = thumbnailURL(record.id);
+    image.src = thumbnailURL(record.id, kind);
+    if (kind === 'shorts') image.addEventListener('error', () => {
+      image.src = thumbnailURL(record.id, 'longform');
+    }, { once: true });
     image.alt = '';
     image.loading = 'lazy';
     image.decoding = 'async';
@@ -136,16 +146,16 @@
     return new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
   };
 
-  const makeVideoCard = (video) => {
+  const makeVideoCard = (video, kind = 'longform') => {
     const article = document.createElement('article');
-    article.className = 'video-slot video-card';
+    article.className = 'video-slot video-card' + (kind === 'shorts' ? ' short-video-card' : '');
     const media = document.createElement('a');
     media.className = 'video-thumb-link';
-    media.href = videoURL(video.id);
+    media.href = videoURL(video.id, kind);
     media.target = '_blank';
     media.rel = 'noopener noreferrer';
     media.setAttribute('aria-label', 'Watch ' + video.title + ' on YouTube');
-    media.appendChild(thumbImage(video));
+    media.appendChild(thumbImage(video, kind));
     const shine = document.createElement('span');
     shine.className = 'video-thumb-shine';
     shine.setAttribute('aria-hidden', 'true');
@@ -160,14 +170,16 @@
     copy.className = 'video-copy';
     const heading = document.createElement('h3');
     const link = document.createElement('a');
-    link.href = videoURL(video.id);
+    link.href = videoURL(video.id, kind);
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.textContent = video.title;
     heading.appendChild(link);
     const date = document.createElement('p');
     date.className = 'video-info';
-    date.textContent = 'Published ' + dateLabel(video.published);
+    date.textContent = video.published
+      ? 'Published ' + dateLabel(video.published)
+      : (kind === 'shorts' ? 'YouTube Short' : 'Full-length video');
     copy.append(heading, date);
     article.append(media, copy);
     return article;
@@ -183,7 +195,7 @@
     featuredLink.appendChild(thumbImage(video));
     const label = document.createElement('span');
     label.className = 'feature-label';
-    label.textContent = 'LATEST PUBLIC UPLOAD';
+    label.textContent = 'LATEST LONG-FORM VIDEO';
     featuredLink.appendChild(label);
     const shine = document.createElement('span');
     shine.className = 'video-thumb-shine';
@@ -191,7 +203,9 @@
     featuredLink.appendChild(shine);
     attachPreview(featuredLink, video);
     featuredTitle.textContent = video.title;
-    featuredDescription.textContent = 'The newest public upload from Aster. Published ' + dateLabel(video.published) + '.';
+    featuredDescription.textContent = video.published
+      ? 'Newest long-form episode from Aster. Published ' + dateLabel(video.published) + '.'
+      : 'The newest long-form adventure from Aster.';
     featuredWatchLink.href = videoURL(video.id);
     featuredWatchLink.target = '_blank';
     featuredWatchLink.rel = 'noopener noreferrer';
@@ -199,46 +213,59 @@
   };
 
   const readFeed = async () => {
-    if (!videoGrid) return;
+    if (!videoGrid || !shortsGrid) return;
     try {
       const response = await fetch('data/latest.json?t=' + Date.now(), { cache: 'no-store' });
-      if (!response.ok) throw new Error('YouTube feed not available');
+      if (!response.ok) throw new Error('YouTube tabs feed unavailable');
       const payload = await response.json();
-      if (payload.channelId !== 'UCWnTWOcecxIeXBY5UNfw16Q' || !Array.isArray(payload.videos)) {
-        throw new Error('Unexpected feed content');
+      if (payload.channelId !== 'UCWnTWOcecxIeXBY5UNfw16Q' ||
+          !Array.isArray(payload.longform) || !Array.isArray(payload.shorts)) {
+        throw new Error('Unexpected YouTube feed schema');
       }
-      const videos = payload.videos.filter((item) =>
-        item && typeof item.id === 'string' && safeVideoId.test(item.id) &&
-        typeof item.title === 'string' && item.title.trim() &&
-        typeof item.published === 'string'
-      ).slice(0, 6);
-      if (!videos.length) {
-        if (updatedLabel) updatedLabel.textContent = 'Latest uploads are being connected. Browse YouTube ↗';
-        return;
+      const valid = (item) => item &&
+        typeof item.id === 'string' && safeVideoId.test(item.id) &&
+        typeof item.title === 'string' && !!item.title.trim() &&
+        (!item.published || typeof item.published === 'string');
+      const videos = payload.longform.filter(valid).slice(0, 6);
+      const shorts = payload.shorts.filter(valid).slice(0, 6);
+      if (!videos.length || !shorts.length) {
+        throw new Error('A YouTube tab has no verified uploads');
       }
-      const signature = videos.map((item) => item.id).join(',');
+      const longIds = new Set(videos.map((item) => item.id));
+      if (shorts.some((item) => longIds.has(item.id))) {
+        throw new Error('Overlapping video formats in latest feed');
+      }
+      const signature = videos.map((item) => item.id).join(',') +
+        '|' + shorts.map((item) => item.id).join(',');
       if (lastFeedSignature !== signature) {
         stopPreview();
         if (observer) observer.disconnect();
         visibleEntries = new Map();
         mediaEntries.clear();
-        const cards = document.createDocumentFragment();
-        for (const video of videos) cards.appendChild(makeVideoCard(video));
-        videoGrid.replaceChildren(cards);
+        const fullCards = document.createDocumentFragment();
+        const shortCards = document.createDocumentFragment();
+        for (const video of videos) fullCards.appendChild(makeVideoCard(video, 'longform'));
+        for (const video of shorts) shortCards.appendChild(makeVideoCard(video, 'shorts'));
+        videoGrid.replaceChildren(fullCards);
+        shortsGrid.replaceChildren(shortCards);
         renderFeatured(videos[0]);
         lastFeedSignature = signature;
       }
-      if (updatedLabel) {
-        const stamp = new Date(payload.updatedAt);
-        updatedLabel.textContent = Number.isFinite(stamp.valueOf())
-          ? 'Public feed refreshed ' + new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(stamp)
-          : 'Latest public YouTube videos';
-      }
-    } catch (error) {
-      if (updatedLabel) updatedLabel.textContent = lastFeedSignature
-        ? 'Showing last available public uploads'
-        : 'Live feed unavailable · Browse YouTube';
-      // Preserve existing cards during a temporary network outage.
+      const date = new Date(payload.updatedAt);
+      const updated = Number.isFinite(date.valueOf())
+        ? 'Updated ' + new Intl.DateTimeFormat('en', {
+          month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+        }).format(date)
+        : 'Latest public uploads';
+      if (updatedLabel) updatedLabel.textContent = updated;
+      if (shortsUpdatedLabel) shortsUpdatedLabel.textContent = updated;
+    } catch (_) {
+      const status = lastFeedSignature
+        ? 'Showing last verified uploads'
+        : 'Updates temporarily unavailable · Browse YouTube';
+      if (updatedLabel) updatedLabel.textContent = status;
+      if (shortsUpdatedLabel) shortsUpdatedLabel.textContent = status;
+      // Keep the last successfully classified cards on network failures.
     }
   };
 
