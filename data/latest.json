@@ -1,5 +1,48 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": null,
-  "videos": []
+  "updatedAt": "2026-10-08T18:17:52+00:00",
+  "videos": [
+    {
+      "id": "gHIVJ1O2zio",
+      "title": "Let's Go Get Some Hookers",
+      "published": "2026-10-08T15:00:36+00:00",
+      "url": "https://www.youtube.com/watch?v=gHIVJ1O2zio",
+      "thumbnail": "https://i.ytimg.com/vi/gHIVJ1O2zio/hqdefault.jpg"
+    },
+    {
+      "id": "5BsV3A75U0A",
+      "title": "Fallin' To My Knees~ | Fall Guys Ep 2",
+      "published": "2026-10-07T17:00:30+00:00",
+      "url": "https://www.youtube.com/watch?v=5BsV3A75U0A",
+      "thumbnail": "https://i.ytimg.com/vi/5BsV3A75U0A/hqdefault.jpg"
+    },
+    {
+      "id": "wHrcknl1WK8",
+      "title": "This Game Is Bad",
+      "published": "2026-10-07T15:00:17+00:00",
+      "url": "https://www.youtube.com/watch?v=wHrcknl1WK8",
+      "thumbnail": "https://i.ytimg.com/vi/wHrcknl1WK8/hqdefault.jpg"
+    },
+    {
+      "id": "ZuThq6tpTUY",
+      "title": "Please Don't Clip It",
+      "published": "2026-10-06T15:00:39+00:00",
+      "url": "https://www.youtube.com/watch?v=ZuThq6tpTUY",
+      "thumbnail": "https://i.ytimg.com/vi/ZuThq6tpTUY/hqdefault.jpg"
+    },
+    {
+      "id": "c58Wmid1WHo",
+      "title": "Why Are We Here",
+      "published": "2026-10-05T15:00:23+00:00",
+      "url": "https://www.youtube.com/watch?v=c58Wmid1WHo",
+      "thumbnail": "https://i.ytimg.com/vi/c58Wmid1WHo/hqdefault.jpg"
+    },
+    {
+      "id": "4L4-7wHLmJ8",
+      "title": "Why Is There So Much Color",
+      "published": "2026-10-04T15:00:10+00:00",
+      "url": "https://www.youtube.com/watch?v=4L4-7wHLmJ8",
+      "thumbnail": "https://i.ytimg.com/vi/4L4-7wHLmJ8/hqdefault.jpg"
+    }
+  ]
 }
