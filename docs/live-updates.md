@@ -1,10 +1,11 @@
-# Live feed updates
+# Automatic latest videos and Shorts
 
-- The YouTube feed is downloaded from the public, channel-ID-specific official Atom endpoint.
-- GitHub Actions refreshes `data/latest.json` every 30 minutes (best effort; scheduled workflow runs can be delayed). It can also be started manually from Actions.
-- Only public feed entries are shown. Recent Shorts or livestream recordings may appear along with videos; the feed is not a complete video archive.
-- No YouTube API keys, paid service, or client-side RSS proxy is required.
-- The website also checks `data/latest.json` every five minutes while open. This does not make the feed update faster than GitHub Actions.
-- Twitch uses the official Twitch Player SDK to receive online/offline events **while the visitor's page is open**. A status is never labeled LIVE until the SDK reports it; its status may be unavailable if the embed is blocked. Twitch mobile playback still requires user interaction. This is not a push notification or guaranteed always-current background status.
-- YouTube hover/phone-dwell preview loads official muted YouTube embeds only after user hover or mobile dwell. Autoplay can be blocked by device/browser policies; clicking video opens it on YouTube.
-- Revisit Twitch Helix authentication only if scheduled, server-side status caching or notifications are desired. Never commit Twitch secrets.
+- The site shows the six most recent public **long-form videos** from [YouTube's official Videos tab](https://www.youtube.com/@sirasterthecat/videos), in a one-column list.
+- Separately, the six most recent public **Shorts** come from the [official Shorts tab](https://www.youtube.com/@sirasterthecat/shorts), using portrait thumbnails in their own gallery. Classification is based on the channel tabs, **not duration or guesswork**.
+- The featured item also comes from the latest long-form video. Each item opens its corresponding official YouTube page.
+- GitHub Actions refreshes `data/latest.json` approximately every 30 minutes (best effort; GitHub scheduled jobs can be delayed). Visitors check for refreshed JSON every five minutes while viewing the site.
+- The updater uses `yt-dlp` to read public channel tabs, verifies the canonical channel ID, supplements known publish dates from YouTube's Atom feed, and preserves previously verified dates. If either tab cannot be read, the workflow fails safely and the previous data remains in place.
+- Older uploads outside the Atom feed's recent window may not expose an exact date. The interface does **not** invent one.
+- Muted hover (650ms) and mobile viewing-dwell (1900ms) previews use embedded YouTube media. Mobile autoplay is device/browser-dependent.
+- Twitch embeds remain unchanged: the official Twitch Player reports online/offline events while the page is open, but status is not guaranteed on every network or as an external push notification.
+- No YouTube API credentials or paid proxy services are required. `yt-dlp` is pinned in the public workflow and should be reviewed/updated if YouTube changes its tab format. 
