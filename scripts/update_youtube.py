@@ -122,7 +122,8 @@ def build_data(long_items, short_items, dates, previous):
                 "title": item["title"],
                 "published": dates.get(vid) or cached.get(vid) or None,
                 "url": f"https://www.youtube.com/{url_path}",
-                "thumbnail": f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg",
+                "thumbnail": f"https://i.ytimg.com/vi/{vid}/" +
+                             ("oar2.jpg" if kind == "shorts" else "hqdefault.jpg"),
             })
         return output
 
