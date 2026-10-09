@@ -693,10 +693,13 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   text-shadow:0 2px 8px #06162d;
 }
 .boot-caption a {
-  display:inline-block;min-height:44px;padding:11px 18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  box-sizing:border-box;width:auto;max-width:100%;
+  min-height:44px;padding:11px 18px;
   border:1px solid var(--ice);border-radius:6px;
   background:#10395a;color:var(--ice);text-decoration:none;
-  font-size:.85rem;letter-spacing:0;pointer-events:auto;
+  text-align:center;vertical-align:middle;white-space:normal;
+  font-size:.85rem;line-height:1.3;letter-spacing:0;pointer-events:auto;
 }
 .boot-caption a:focus-visible {outline:2px solid #fff;outline-offset:4px;}
 @keyframes boot-arrive {from{opacity:0}to{opacity:1}}
