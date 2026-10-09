@@ -1,0 +1,32 @@
+name: Validate N64 cartridge launcher
+
+on:
+  pull_request:
+    paths:
+      - adventure.js
+      - styles.css
+      - tests/test_cartridge_launch.cjs
+      - .github/workflows/validate-cartridge.yml
+  push:
+    branches: [main]
+    paths:
+      - adventure.js
+      - styles.css
+      - tests/test_cartridge_launch.cjs
+      - .github/workflows/validate-cartridge.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node --check adventure.js
+      - run: node --check library.js
+      - run: node --test tests/test_cartridge_launch.cjs

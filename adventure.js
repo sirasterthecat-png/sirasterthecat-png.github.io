@@ -7,7 +7,7 @@
   const CONSOLE_ASSET = 'assets/n64-console-front.webp';
   const TIMING = Object.freeze({
     powerOn: 1200,
-    launch: 1700,  // Exactly 0.5s after the switch and LED turn on.
+    launch: 1700,  // The "game ready" beat, half a second after power-on.
     powerOff: 3700,
     eject: 3820,
     fade: 4600,
@@ -66,11 +66,13 @@
     // These two details are independently animated over the approved artwork.
     const switchEl = element('span', 'boot-power-switch');
     const led = element('span', 'boot-power-led');
-    consoleElement.append(img, switchEl, led);
+    // Anchor the cartridge to the console, so its X coordinate is precisely
+    // the center of the visible slot at every viewport size.
+    consoleElement.append(img, cartridge, switchEl, led);
 
     const caption = element('p', 'boot-caption');
     caption.textContent = 'INSERTING CARTRIDGE...';
-    scene.append(cartridge, consoleElement, caption);
+    scene.append(consoleElement, caption);
     overlay.appendChild(scene);
     return { overlay, scene, caption };
   }
@@ -88,14 +90,8 @@
       event.preventDefault();
       busy = true;
 
-      // A trusted click must open the new tab synchronously to avoid popup
-      // blocking. It stays blank: YouTube is NOT loaded until power-on + 500ms.
-      let newTab = null;
-      try {
-        newTab = window.open('about:blank', '_blank');
-        if (newTab) newTab.opener = null;
-        window.focus();
-      } catch (_) { newTab = null; }
+      // Never create an early tab: browsers foreground it immediately and
+      // hide the very animation the visitor chose to watch.
 
       const host = link.closest('.adventure-grid') ||
                    link.closest('.library-card') || link.parentElement;
@@ -103,32 +99,15 @@
       const { overlay, scene, caption } = buildBootOverlay(link);
       host.appendChild(overlay);
 
-      let blocked = false;
       const after = (ms, fn) => window.setTimeout(fn, ms);
       after(TIMING.powerOn, () => {
         scene.classList.add('boot-powered');
         caption.textContent = 'POWER ON';
       });
       after(TIMING.launch, () => {
-        let launched = false;
-        if (newTab && !newTab.closed) {
-          try {
-            newTab.location.replace(destination);
-            launched = true;
-          } catch (_) { launched = false; }
-        }
-        if (launched) {
-          caption.textContent = 'GAME START!';
-        } else {
-          blocked = true;
-          caption.replaceChildren();
-          const fallback = element('a', 'boot-manual-link');
-          fallback.href = destination;
-          fallback.target = '_blank';
-          fallback.rel = 'noopener noreferrer';
-          fallback.textContent = 'PRESS START — OPEN YOUTUBE ↗';
-          caption.appendChild(fallback);
-        }
+        // The original 500ms power-on beat now changes the caption only.
+        // Opening YouTube here would steal focus before ejection and fade.
+        caption.textContent = 'GAME READY';
       });
 
       // Shutdown is intentionally visible on the original website, even
@@ -136,31 +115,45 @@
       after(TIMING.powerOff, () => {
         scene.classList.remove('boot-powered');
         scene.classList.add('boot-powered-off');
-        if (!blocked) caption.textContent = 'POWER OFF';
+        caption.textContent = 'POWER OFF';
       });
       after(TIMING.eject, () => {
         scene.classList.add('boot-eject');
-        if (!blocked) caption.textContent = 'EJECTING CARTRIDGE...';
+        caption.textContent = 'EJECTING CARTRIDGE...';
       });
       after(TIMING.fade, () => overlay.classList.add('boot-finished'));
       after(TIMING.reset, () => {
-        if (blocked) {
-          // A persistent ordinary link is necessary when a popup was denied.
-          // Moving it outside the overlay keeps it clickable after the fade.
+        overlay.remove();
+        host.classList.remove('is-booting');
+        busy = false;
+
+        // Only try to open YouTube after the entire insertion, power cycle,
+        // ejection, and fade have completed. No tab exists before this point.
+        // Delayed popups are sometimes blocked; preserve a real click fallback.
+        let launched = false;
+        try {
+          const tab = window.open(destination, '_blank');
+          if (tab && !tab.closed) {
+            tab.opener = null;
+            launched = true;
+          }
+        } catch (_) { launched = false; }
+
+        if (!launched) {
+          const previous = host.querySelector('.boot-blocked-note') ||
+                           host.parentElement?.querySelector('.boot-blocked-note');
+          if (previous) previous.remove();
           const note = element('p', 'boot-blocked-note');
-          note.textContent = 'Your browser blocked the YouTube tab. ';
+          note.append('Animation complete. ');
           const fallback = element('a', 'boot-manual-link');
           fallback.href = destination;
           fallback.target = '_blank';
           fallback.rel = 'noopener noreferrer';
-          fallback.textContent = 'Open this game on YouTube ↗';
+          fallback.textContent = 'Open YouTube ↗';
           note.appendChild(fallback);
-          host.after(note);
-          after(12000, () => note.remove());
+          if (host.classList.contains('library-card')) host.appendChild(note);
+          else host.after(note);
         }
-        overlay.remove();
-        host.classList.remove('is-booting');
-        busy = false;
       });
     });
   }
