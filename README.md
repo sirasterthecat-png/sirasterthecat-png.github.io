@@ -5,6 +5,8 @@ Live site: **https://sirasterthecat-png.github.io/**
 The **public deployment** of Aster's starry-night gaming homepage, based on the ghost-glass design refined by Charlie. The separate collaborative development repository is private.
 
 ## Current features
+- Original AsterDab artwork as browser favicon, Apple touch icon, and sharing-preview image.
+- Three responsive N64-style cartridges linking to the channel intro, Gambling With Friends highlight reel, and the latest game playlist listed on the channel. The third cartridge is refreshed by the existing YouTube feed workflow and never autoplays.
 - Links to Aster's official YouTube, Twitch, Bluesky and Discord near the top.
 - Two separate, automatically refreshed sections: the newest six long-form uploads in a vertical list, and the newest six Shorts in a portrait gallery. Both are classified using the channel's official Videos and Shorts tabs through `scripts/update_youtube.py` (with Atom-feed dates when available).
 - A scheduled GitHub Actions feed refresh roughly every 30 minutes; site visitors check the generated JSON about every five minutes. Schedules may be delayed.
