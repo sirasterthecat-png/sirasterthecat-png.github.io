@@ -448,27 +448,52 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 }
 
 
-/* Three N64-inspired cartridge links. No downloaded, reconstructed or AI gameplay art. */
+/* The approved transparent PNG replaces the former CSS-rendered cartridge.
+   Only the thumbnail label and YouTube branding are layered on top. */
 .adventure-section { margin-top: 66px; }
-.adventure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.1vw, 28px); }
-.adventure-choice { min-width: 0; padding: 19px 18px 22px; background: linear-gradient(165deg, #18395a9e, #0a1d39b8 88%); border: 1px solid #6face240; border-radius: 10px; transition: border-color .2s, transform .2s; }
-.adventure-choice:hover, .adventure-choice:focus-within { border-color: #76fff88c; }
-.cartridge-link { display: block; width: min(100%, 290px); margin: 0 auto; aspect-ratio: 27 / 31; position: relative; text-decoration: none; border-radius: 8px; }
-.cartridge-link:focus-visible { outline: 3px solid var(--ice); outline-offset: 4px; }
-.cartridge-plastic {
-  position: absolute; inset: 0; display: block;
-  clip-path: polygon(16% 0%, 84% 0%, 90% 5%, 95% 5%, 99% 9%, 99% 18%, 100% 19%, 100% 94%, 95% 100%, 5% 100%, 0% 94%, 0% 19%, 1% 18%, 1% 9%, 5% 5%, 10% 5%);
-  background: linear-gradient(100deg, #a8b6c3, #e5eaf0 17%, #c5d0dc 51%, #8d9baa 98%);
-  box-shadow: inset 0 0 0 4px #8e9aa9, inset 12px 0 10px #ffffff57, inset -13px 0 11px #28395136;
-  transition: transform .22s, filter .22s;
+.adventure-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+.adventure-choice {
+  min-width: 0; padding: 22px 15px;
+  background: linear-gradient(165deg, #18395a9e, #0a1d39b8 88%);
+  border: 1px solid #6face240; border-radius: 10px;
+  transition: border-color .2s;
 }
-.cartridge-link:hover .cartridge-plastic, .cartridge-link:focus-visible .cartridge-plastic { transform: translateY(-5px); filter: brightness(1.06); }
-.cartridge-ridge { position: absolute; left: 9%; right: 9%; top: 9%; height: 6.5%; border-top: 2px solid #8695a3; border-bottom: 1px solid #ffffffb5; border-radius: 30% 30% 12% 12%; opacity: .66; }
-.cartridge-sticker { position: absolute; left: 12%; right: 12%; top: 23%; bottom: 19%; display: flex; flex-direction: column; border-radius: 9px 9px 4px 4px; padding: 7px; background: linear-gradient(145deg, #254972, #071b35 88%); border: 3px solid #edf6fa; box-shadow: 0 2px 7px #25344475; overflow: hidden; }
-.cartridge-picture { display: block; flex: 1; min-height: 0; width: 100%; background: #071632; overflow: hidden; }
-.cartridge-picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cartridge-stripe { padding: 5px 0 2px; text-align: center; color: var(--ice); font-size: clamp(.47rem, .9vw, .57rem); letter-spacing: .12em; font-weight: 750; white-space: nowrap; }
-.cartridge-mold { position: absolute; width: 36%; height: 4%; bottom: 7%; left: 32%; border-radius: 40%; border-bottom: 2px solid #75899b; border-top: 2px solid #f5fbffaf; opacity: .75; }
+.adventure-choice:hover, .adventure-choice:focus-within { border-color: #76fff88c; }
+.cartridge-link {
+  display: block; width: min(100%, 310px); aspect-ratio: 1231 / 794;
+  position: relative; margin: 0 auto; color: inherit; text-decoration: none;
+  border-radius: 8px;
+}
+.cartridge-link:focus-visible { outline: 3px solid var(--ice); outline-offset: 4px; }
+.cartridge-image-wrap { position: absolute; inset: 0; display: block; }
+.cartridge-shell {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+  object-fit: contain; filter: drop-shadow(0 8px 9px #02091675);
+  transition: transform .2s, filter .2s;
+}
+.cartridge-link:hover .cartridge-shell,
+.cartridge-link:focus-visible .cartridge-shell {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 12px 13px #02091690);
+}
+.cartridge-label-area {
+  position: absolute; left: 26.1%; right: 26.1%; top: 17.8%; bottom: 16.9%;
+  display: flex; flex-direction: column; overflow: hidden;
+  border-radius: 5px; border: 2px solid #f5f9ff;
+  background: #071632; box-shadow: 0 1px 7px #15263a65;
+  transition: transform .2s;
+}
+.cartridge-link:hover .cartridge-label-area,
+.cartridge-link:focus-visible .cartridge-label-area { transform: translateY(-3px); }
+.cartridge-picture { display: block; width: 100%; flex: 1; min-height: 0; overflow: hidden; }
+.cartridge-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cartridge-platform {
+  display: flex; justify-content: center; align-items: center;
+  gap: 5px; flex: 0 0 25%; min-height: 25px; padding: 2px;
+  background: #071327; color: #fff; font-size: .7rem;
+  letter-spacing: .02em; font-weight: 750; line-height: 1.1;
+}
+.cartridge-platform img { width: 24px; height: auto; }
 .cartridge-description { padding: 12px 5px 0; text-align: center; }
 .cartridge-description .eyebrow { font-size: .61rem; margin-bottom: 6px; }
 .cartridge-description h3 { font-size: 1.05rem; line-height: 1.32; color: var(--fur); }
@@ -480,11 +505,13 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 @media (max-width: 520px) {
   .adventure-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .adventure-choice:last-child { grid-column: auto; width: 100%; }
-  .adventure-choice { padding: 18px 14px 19px; }
-  .cartridge-link { width: min(100%, 250px); }
-  .cartridge-stripe { font-size: .55rem; }
+  .adventure-choice { padding: 20px 15px; }
+  .cartridge-link { width: min(100%, 285px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cartridge-plastic, .adventure-choice { transition: none; }
-  .cartridge-link:hover .cartridge-plastic, .cartridge-link:focus-visible .cartridge-plastic { transform: none; }
+  .cartridge-shell, .cartridge-label-area, .adventure-choice { transition: none; }
+  .cartridge-link:hover .cartridge-shell,
+  .cartridge-link:focus-visible .cartridge-shell,
+  .cartridge-link:hover .cartridge-label-area,
+  .cartridge-link:focus-visible .cartridge-label-area { transform: none; }
 }
