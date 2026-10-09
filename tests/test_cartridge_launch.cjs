@@ -165,7 +165,7 @@ test('Original N64 art is stacked around the centered cartridge and dust flap',(
 test('Cartridge enters and ejects vertically with no tilt or diagonal drift',()=>{
   const frame=css.slice(css.indexOf('@keyframes boot-seat'),css.indexOf('@media(max-width:1050px)'));
   assert.doesNotMatch(frame,/rotate\s*\(/);
-  assert.match(frame,/100% \{top:15%;transform:translateX\(-50%\);clip-path:inset\(0 0 60% 0\)/);
+  assert.match(frame,/100% \\{top:21\\.5%;transform:translateX\\(-50%\\);clip-path:inset\\(0 0 76% 0\\)/);
   assert.match(frame,/100% \{top:-32%;transform:translateX\(-50%\);clip-path:inset\(0 0 0 0\)/);
 });
 
