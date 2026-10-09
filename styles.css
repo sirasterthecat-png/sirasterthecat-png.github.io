@@ -569,8 +569,9 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 .library-more[hidden] {display:none;}
 .library-footnote {margin:25px auto 0;max-width:870px;font-size:.76rem;line-height:1.7;color:var(--muted);}
 
-/* Cartridge launch: the approved front-facing N64 render, with a switch
-   and authentic red front power light animated over the image. */
+/* N64 console layers measured against the approved 700x525 image.
+   Slot center x=350; actual light-gray dust door spans about x=200..500,
+   y=136..158. The original raster is reused without modifying its artwork. */
 .adventure-grid,.library-card {position:relative;}
 .adventure-grid.is-booting > .adventure-choice {opacity:.10;transition:opacity .24s;}
 .library-card.is-booting > .cartridge-link,
@@ -582,48 +583,37 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   border:1px solid #76fff88a;border-radius:9px;
   animation:boot-arrive .18s ease-out both;
 }
-.cartridge-boot-overlay.boot-finished {
-  opacity:0;transition:opacity .4s ease-in;
-}
+.cartridge-boot-overlay.boot-finished {opacity:0;transition:opacity .4s ease-in;}
 .boot-scene {
   position:relative;width:min(100%,350px);height:min(270px,100%);
   min-height:145px;isolation:isolate;
 }
 .boot-console-visual {
-  position:absolute;z-index:2;left:50%;bottom:17px;
-  width:min(100%,340px);aspect-ratio:1448/1086;
-  transform:translateX(-50%);pointer-events:none;
+  position:absolute;left:50%;bottom:17px;
+  width:min(100%,340px);aspect-ratio:700/525;
+  transform:translateX(-50%);isolation:isolate;
   filter:drop-shadow(0 9px 11px #0008);
 }
-.boot-console-image {
-  /* The console shell hides the lower cartridge as it enters the slot. */
-  position:relative;z-index:3;display:block;
-  width:100%;height:100%;object-fit:contain;
+.boot-console-back,.boot-console-front {
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:contain;pointer-events:none;
 }
-.boot-power-switch {
-  position:absolute;z-index:4;left:22%;top:49.1%;width:5.7%;height:3.5%;
-  border-radius:38%;border:1px solid #090b10;
-  background:linear-gradient(#777982,#373943 65%,#1b1d23);
-  box-shadow:inset 0 1px 2px #dddddd78,0 1px 2px #0a1017;
-  transform:translateY(3px);
-  transition:transform .17s ease;
+.boot-console-back {z-index:1;}
+/* First cover the static white flap printed in the original N64 image,
+   creating the dark inside of the cartridge slot beneath the hinged door. */
+.boot-slot-cavity {
+  position:absolute;z-index:2;left:28.55%;top:25.7%;
+  width:42.95%;height:4.9%;
+  border-radius:4px 4px 7px 7px;
+  background:linear-gradient(#080808,#242426 58%,#09090b);
+  box-shadow:inset 0 1px 3px #000,inset 0 -1px 1px #7776;
 }
-.boot-power-led {
-  position:absolute;z-index:4;left:47.3%;top:75.7%;width:4.2%;height:1.7%;
-  border-radius:999px;opacity:0;background:#f71921;
-  box-shadow:0 0 6px 3px #fb1426bc,0 0 18px 9px #ff172f6b;
-  transition:opacity .08s linear;
-}
-.boot-scene.boot-powered .boot-power-switch {transform:translateY(-5px);}
-.boot-scene.boot-powered .boot-power-led {opacity:1;}
-.boot-scene.boot-powered-off .boot-power-switch {transform:translateY(3px);}
-.boot-scene.boot-powered-off .boot-power-led {opacity:0;}
 .boot-cartridge {
-  /* Slot-relative: console artwork slot center is at 50% X and 25% Y.
-     No rotation at any point; the bottom disappears into the slot plane. */
-  position:absolute;z-index:2;left:50%;top:-38%;
+  position:absolute;z-index:3;left:50%;top:-32%;
   width:34%;aspect-ratio:1231/794;pointer-events:none;
   transform:translateX(-50%);clip-path:inset(0 0 0 0);
+}
+.boot-scene.boot-inserting .boot-cartridge {
   animation:boot-seat 1.1s cubic-bezier(.27,.05,.15,1) .08s forwards;
 }
 .boot-cartridge .cartridge-image-wrap,.boot-cartridge .library-cartridge-art {
@@ -633,32 +623,73 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   width:100%;height:100%;object-fit:contain;
 }
 .boot-cartridge .cartridge-label-area {border-width:1px;}
+/* Front console image covers anything that passes below the rim.
+   This establishes a real occlusion plane rather than a floating sticker. */
+.boot-console-front {z-index:4;clip-path:inset(29.7% 0 0 0);}
+/* Original light-gray dust flap, cropped from the same image with CSS.
+   No separately generated flap art; it folds downward into the slot. */
+.boot-slot-flap {
+  position:absolute;z-index:5;left:28.55%;top:25.7%;
+  width:42.95%;height:4.55%;border-radius:2px 2px 6px 6px;
+  background:url("assets/n64-console-front.webp") no-repeat;
+  background-size:232.83% auto;background-position:50% 26.65%;
+  transform-origin:50% 100%;backface-visibility:hidden;
+  transform:perspective(160px) rotateX(0deg);
+  filter:brightness(1);
+  transition:transform .22s ease-in,filter .22s ease-in;
+  pointer-events:none;
+}
+.boot-scene.boot-slot-open .boot-slot-flap {
+  transform:perspective(160px) rotateX(-78deg) translateY(3px);
+  filter:brightness(.45);
+}
+.boot-power-switch {
+  position:absolute;z-index:6;left:22%;top:49.1%;
+  width:5.7%;height:3.5%;border-radius:38%;
+  border:1px solid #090b10;
+  background:linear-gradient(#777982,#373943 65%,#1b1d23);
+  box-shadow:inset 0 1px 2px #dddddd78,0 1px 2px #0a1017;
+  transform:translateY(3px);transition:transform .17s ease;
+}
+.boot-power-led {
+  position:absolute;z-index:6;left:47.3%;top:75.7%;
+  width:4.2%;height:1.7%;border-radius:999px;
+  opacity:0;background:#f71921;
+  box-shadow:0 0 6px 3px #fb1426bc,0 0 18px 9px #ff172f6b;
+  transition:opacity .08s linear;
+}
+.boot-scene.boot-powered .boot-power-switch {transform:translateY(-5px);}
+.boot-scene.boot-powered .boot-power-led {opacity:1;}
+.boot-scene.boot-powered-off .boot-power-switch {transform:translateY(3px);}
+.boot-scene.boot-powered-off .boot-power-led {opacity:0;}
 .boot-scene.boot-eject .boot-cartridge {
-  animation:boot-eject .7s cubic-bezier(.15,.8,.2,1) both;
+  animation:boot-eject .68s cubic-bezier(.16,.84,.21,1) both;
 }
 .boot-caption {
-  position:absolute;z-index:4;bottom:0;left:0;right:0;
+  position:absolute;z-index:7;bottom:0;left:0;right:0;
   text-align:center;color:var(--ice);
   font-size:.7rem;letter-spacing:.17em;font-weight:800;
   text-shadow:0 2px 8px #06162d;
 }
-.boot-caption a {display:inline-block;padding:10px;color:var(--ice);text-decoration:underline;}
-.boot-blocked-note {
-  margin:8px 0;padding:9px 12px;color:var(--fur);
-  background:#081c38;border:1px solid #76fff8aa;
-  border-radius:5px;font-size:.8rem;
+.boot-caption a {
+  display:inline-block;min-height:44px;padding:11px 18px;
+  border:1px solid var(--ice);border-radius:6px;
+  background:#10395a;color:var(--ice);text-decoration:none;
+  font-size:.85rem;letter-spacing:0;pointer-events:auto;
 }
-.boot-blocked-note a {color:var(--ice);text-decoration:underline;}
+.boot-caption a:focus-visible {outline:2px solid #fff;outline-offset:4px;}
 @keyframes boot-arrive {from{opacity:0}to{opacity:1}}
 @keyframes boot-seat {
-  0% {top:-38%;transform:translateX(-50%);clip-path:inset(0 0 0 0);opacity:1;}
-  70% {top:-4%;transform:translateX(-50%);clip-path:inset(0 0 0 0);opacity:1;}
-  100% {top:5%;transform:translateX(-50%);clip-path:inset(0 0 34% 0);opacity:1;}
+  0%   {top:-32%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
+  50%  {top:-5%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
+  72%  {top:5%;transform:translateX(-50%);clip-path:inset(0 0 29% 0);}
+  100% {top:15%;transform:translateX(-50%);clip-path:inset(0 0 60% 0);}
 }
 @keyframes boot-eject {
-  0% {top:5%;transform:translateX(-50%);clip-path:inset(0 0 34% 0);opacity:1;}
-  30% {top:-4%;transform:translateX(-50%);clip-path:inset(0 0 0 0);opacity:1;}
-  100% {top:-38%;transform:translateX(-50%);clip-path:inset(0 0 0 0);opacity:1;}
+  0%   {top:15%;transform:translateX(-50%);clip-path:inset(0 0 60% 0);}
+  34%  {top:5%;transform:translateX(-50%);clip-path:inset(0 0 29% 0);}
+  65%  {top:-5%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
+  100% {top:-32%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
 }
 @media(max-width:1050px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:680px){
@@ -674,6 +705,7 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   .boot-caption{letter-spacing:.08em;font-size:.58rem;}
   .boot-console-visual{bottom:14px;}
   .boot-power-switch{border-width:0;}
+  .boot-caption a{font-size:.77rem;padding:8px 10px;}
 }
 @media(prefers-reduced-motion:reduce){
   .cartridge-boot-overlay,.boot-cartridge{animation:none;}

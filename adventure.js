@@ -8,10 +8,7 @@
   const TIMING = Object.freeze({
     powerOn: 1200,
     launch: 1700,  // The "game ready" beat, half a second after power-on.
-    powerOff: 3700,
-    eject: 3820,
-    fade: 4600,
-    reset: 5040
+    // Reverse timings run only after a successful open or fallback click.
   });
   let busy = false;
 
@@ -43,8 +40,16 @@
     overlay.setAttribute('aria-live', 'polite');
     overlay.setAttribute('aria-label', 'Inserting cartridge into Nintendo 64');
     const scene = element('div', 'boot-scene');
-    const cartridge = element('div', 'boot-cartridge');
+    const consoleElement = element('div', 'boot-console-visual');
+    consoleElement.setAttribute('aria-hidden', 'true');
 
+    // Reuse the same approved N64 art as two image layers. The upper/rear
+    // image sits BEHIND the cartridge; the front shell masks insertion.
+    const rear = element('img', 'boot-console-back');
+    rear.src = CONSOLE_ASSET; rear.alt = '';
+    rear.width = 700; rear.height = 525;
+    const cavity = element('span', 'boot-slot-cavity');
+    const cartridge = element('div', 'boot-cartridge');
     const original = link.querySelector('.cartridge-image-wrap, .library-cartridge-art');
     if (original) cartridge.appendChild(original.cloneNode(true));
     else {
@@ -53,23 +58,15 @@
       shell.alt = '';
       cartridge.appendChild(shell);
     }
-
-    const consoleElement = element('div', 'boot-console-visual');
-    consoleElement.setAttribute('aria-hidden', 'true');
-    const img = element('img', 'boot-console-image');
-    img.src = CONSOLE_ASSET;
-    img.alt = '';
-    img.width = 1448;
-    img.height = 1086;
-    img.decoding = 'async';
-
-    // These two details are independently animated over the approved artwork.
+    const front = element('img', 'boot-console-front');
+    front.src = CONSOLE_ASSET; front.alt = '';
+    front.width = 700; front.height = 525;
+    // The flap itself is a pixel-accurate CSS crop of the approved light-gray
+    // slot cover, animated as a small downward-folding hinged piece.
+    const flap = element('span', 'boot-slot-flap');
     const switchEl = element('span', 'boot-power-switch');
     const led = element('span', 'boot-power-led');
-    // Anchor the cartridge to the console, so its X coordinate is precisely
-    // the center of the visible slot at every viewport size.
-    consoleElement.append(img, cartridge, switchEl, led);
-
+    consoleElement.append(rear, cavity, cartridge, front, flap, switchEl, led);
     const caption = element('p', 'boot-caption');
     caption.textContent = 'INSERTING CARTRIDGE...';
     scene.append(consoleElement, caption);
@@ -89,70 +86,74 @@
       if (!/^https:\/\/www\.youtube\.com\/(?:watch|playlist)\?/.test(destination)) return;
       event.preventDefault();
       busy = true;
-
-      // Never create an early tab: browsers foreground it immediately and
-      // hide the very animation the visitor chose to watch.
-
       const host = link.closest('.adventure-grid') ||
                    link.closest('.library-card') || link.parentElement;
+      const old = host.querySelector('.boot-blocked-note') ||
+                  host.parentElement?.querySelector('.boot-blocked-note');
+      if (old) old.remove();
       host.classList.add('is-booting');
       const { overlay, scene, caption } = buildBootOverlay(link);
       host.appendChild(overlay);
-
+      scene.classList.add('boot-inserting');
       const after = (ms, fn) => window.setTimeout(fn, ms);
-      after(TIMING.powerOn, () => {
-        scene.classList.add('boot-powered');
-        caption.textContent = 'POWER ON';
-      });
-      after(TIMING.launch, () => {
-        // The original 500ms power-on beat now changes the caption only.
-        // Opening YouTube here would steal focus before ejection and fade.
-        caption.textContent = 'GAME READY';
-      });
+      let reversing = false;
 
-      // Shutdown is intentionally visible on the original website, even
-      // when the newly opened browser tab takes foreground focus.
-      after(TIMING.powerOff, () => {
+      const reverse = () => {
+        if (reversing) return;
+        reversing = true;
         scene.classList.remove('boot-powered');
         scene.classList.add('boot-powered-off');
         caption.textContent = 'POWER OFF';
-      });
-      after(TIMING.eject, () => {
-        scene.classList.add('boot-eject');
-        caption.textContent = 'EJECTING CARTRIDGE...';
-      });
-      after(TIMING.fade, () => overlay.classList.add('boot-finished'));
-      after(TIMING.reset, () => {
-        overlay.remove();
-        host.classList.remove('is-booting');
-        busy = false;
+        after(110, () => {
+          scene.classList.remove('boot-inserting');
+          scene.classList.add('boot-eject');
+          caption.textContent = 'EJECTING CARTRIDGE...';
+        });
+        // Let the cartridge clear the entrance before closing the dust flap.
+        after(770, () => scene.classList.remove('boot-slot-open'));
+        after(1010, () => overlay.classList.add('boot-finished'));
+        after(1430, () => {
+          overlay.remove();
+          host.classList.remove('is-booting');
+          busy = false;
+        });
+      };
 
-        // Only try to open YouTube after the entire insertion, power cycle,
-        // ejection, and fade have completed. No tab exists before this point.
-        // Delayed popups are sometimes blocked; preserve a real click fallback.
+      after(610, () => scene.classList.add('boot-slot-open'));
+      after(TIMING.powerOn, () => {
+        scene.classList.add('boot-powered');
+        caption.textContent = 'GAME READY';
+      });
+      after(TIMING.launch, () => {
         let launched = false;
         try {
+          // No early blank tab. A truthy WindowProxy is a best-effort
+          // indication of success, not confirmation of YouTube playback.
+          // 'noopener' in window.open features can return null on success;
+          // instead detach opener from an actual returned handle.
           const tab = window.open(destination, '_blank');
           if (tab && !tab.closed) {
-            tab.opener = null;
+            try { tab.opener = null; } catch (_) { /* browser-owned proxy */ }
             launched = true;
           }
         } catch (_) { launched = false; }
 
-        if (!launched) {
-          const previous = host.querySelector('.boot-blocked-note') ||
-                           host.parentElement?.querySelector('.boot-blocked-note');
-          if (previous) previous.remove();
-          const note = element('p', 'boot-blocked-note');
-          note.append('Animation complete. ');
+        if (launched) {
+          after(430, reverse);
+        } else {
+          // Keep the powered-on console, open dust doors, and seated cart.
+          // Only the requested link text is displayed.
+          caption.replaceChildren();
           const fallback = element('a', 'boot-manual-link');
           fallback.href = destination;
           fallback.target = '_blank';
           fallback.rel = 'noopener noreferrer';
-          fallback.textContent = 'Open YouTube ↗';
-          note.appendChild(fallback);
-          if (host.classList.contains('library-card')) host.appendChild(note);
-          else host.after(note);
+          fallback.textContent = 'Open YouTube';
+          fallback.addEventListener('click', () => {
+            // The native link opens directly from a real user gesture.
+            after(120, reverse);
+          }, { once: true });
+          caption.appendChild(fallback);
         }
       });
     });
