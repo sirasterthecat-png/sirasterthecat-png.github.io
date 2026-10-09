@@ -99,7 +99,49 @@ def public_tab(kind):
     return selected
 
 
-def build_data(long_items, short_items, dates, previous):
+def current_game_playlist():
+    """Use the top playable game playlist from the channel's Playlists tab.
+
+    The channel's order is the public proxy for playlist recency: the public
+    API listing does not expose authoritative per-playlist modified dates.
+    """
+    options = {
+        "quiet": True, "no_warnings": True, "skip_download": True,
+        "extract_flat": "in_playlist", "playlistend": 30,
+        "socket_timeout": 25, "retries": 2, "ignoreerrors": False,
+    }
+    with YoutubeDL(options) as ydl:
+        listing = ydl.extract_info(f"https://www.youtube.com/@{HANDLE}/playlists", download=False)
+    if not listing or listing.get("channel_id") != CHANNEL_ID:
+        raise ValueError("Playlist tab channel identity mismatch")
+    skip_titles = {"stream vods", "vods", "shorts", "highlights", "uploads", "past livestreams"}
+    for item in listing.get("entries") or []:
+        if not isinstance(item, dict):
+            continue
+        playlist_id = item.get("id") or ""
+        title = (item.get("title") or "").strip()
+        if not re.fullmatch(r"PL[A-Za-z0-9_-]{10,55}", playlist_id) or not title:
+            continue
+        if title.casefold() in skip_titles:
+            continue
+        thumb_id = None
+        for thumbnail in item.get("thumbnails") or []:
+            match = re.search(r"/vi(?:_webp)?/([A-Za-z0-9_-]{11})/", thumbnail.get("url") or "")
+            if match:
+                thumb_id = match.group(1)
+                break
+        if not thumb_id:
+            continue
+        return {
+            "id": playlist_id,
+            "title": title[:120],
+            "url": "https://www.youtube.com/playlist?list=" + playlist_id,
+            "thumbnailVideoId": thumb_id,
+        }
+    raise ValueError("No usable game playlist with thumbnail found")
+
+
+def build_data(long_items, short_items, dates, previous, featured_playlist):
     # Carry forward known exact dates when Atom's rolling window drops uploads.
     cached = {
         item["id"]: item.get("published")
@@ -133,7 +175,10 @@ def build_data(long_items, short_items, dates, previous):
         "longform": enrich(long_items, "videos"),
         "shorts": enrich(short_items, "shorts"),
     }
-    if previous.get("longform") == data["longform"] and previous.get("shorts") == data["shorts"]:
+    data["featuredPlaylist"] = featured_playlist
+    if (previous.get("longform") == data["longform"] and
+            previous.get("shorts") == data["shorts"] and
+            previous.get("featuredPlaylist") == data["featuredPlaylist"]):
         print("Both video tabs unchanged; skipping commit")
         return None
     return data
@@ -150,7 +195,12 @@ def main():
     short_items = public_tab("shorts")
     if {x["id"] for x in long_items} & {x["id"] for x in short_items}:
         raise ValueError("YouTube tabs overlap unexpectedly; preserving previous state")
-    data = build_data(long_items, short_items, read_atom_dates(), previous)
+    try:
+        featured_playlist = current_game_playlist()
+    except Exception as error:
+        print(f"Playlist refresh unavailable; preserving last verified selection: {error}")
+        featured_playlist = previous.get("featuredPlaylist")
+    data = build_data(long_items, short_items, read_atom_dates(), previous, featured_playlist)
     if data is None:
         return
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
