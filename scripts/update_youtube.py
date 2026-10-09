@@ -99,46 +99,81 @@ def public_tab(kind):
     return selected
 
 
-def current_game_playlist():
-    """Use the top playable game playlist from the channel's Playlists tab.
+EPISODE_GAME = re.compile(
+    r"\|\s*(?P<game>.+?)\s+(?:ep(?:isode)?\.?\s*\d+|"
+    r"part\s*\d+|pt\.?\s*\d+|finale)\s*[!?.~]*$",
+    re.IGNORECASE,
+)
 
-    The channel's order is the public proxy for playlist recency: the public
-    API listing does not expose authoritative per-playlist modified dates.
+
+def normalized_game_name(value):
+    """Compare playlist/game labels without punctuation or case differences."""
+    return re.sub(r"[^a-z0-9]+", " ", value.casefold()).strip()
+
+
+def latest_episode_game(long_items):
+    """Use published video-tab order, not playlist-tab display order."""
+    for entry in long_items:
+        if not isinstance(entry, dict) or not isinstance(entry.get("title"), str):
+            continue
+        match = EPISODE_GAME.search(entry["title"])
+        if match:
+            game = match.group("game").strip()
+            if normalized_game_name(game):
+                return game
+    raise ValueError("No recent long-form title identifies a game episode")
+
+
+def select_game_playlist(long_items, playlist_entries):
+    """Return only an exact game-name match for the newest identified episode.
+
+    Never promote an unrelated playlist simply because it is listed first.
+    Caller preserves the previously verified playlist when a new one is missing.
     """
+    game = latest_episode_game(long_items)
+    wanted = normalized_game_name(game)
+    skip_titles = {"stream vods", "vods", "shorts", "highlights",
+                   "uploads", "past livestreams"}
+    for item in playlist_entries:
+        if not isinstance(item, dict):
+            continue
+        playlist_id = item.get("id") or ""
+        title = (item.get("title") or "").strip()
+        if (not re.fullmatch(r"PL[A-Za-z0-9_-]{10,55}", playlist_id)
+                or not title or title.casefold() in skip_titles
+                or normalized_game_name(title) != wanted):
+            continue
+        for thumbnail in item.get("thumbnails") or []:
+            if not isinstance(thumbnail, dict):
+                continue
+            match = re.search(
+                r"/vi(?:_webp)?/([A-Za-z0-9_-]{11})/",
+                thumbnail.get("url") or "",
+            )
+            if match:
+                return {
+                    "id": playlist_id,
+                    "title": title[:120],
+                    "url": "https://www.youtube.com/playlist?list=" + playlist_id,
+                    "thumbnailVideoId": match.group(1),
+                }
+    raise ValueError(f"No verified playlist matches the latest episode game: {game}")
+
+
+def current_game_playlist(long_items):
+    """Select matching playlist from the authenticated channel's public tab."""
     options = {
         "quiet": True, "no_warnings": True, "skip_download": True,
         "extract_flat": "in_playlist", "playlistend": 30,
         "socket_timeout": 25, "retries": 2, "ignoreerrors": False,
     }
     with YoutubeDL(options) as ydl:
-        listing = ydl.extract_info(f"https://www.youtube.com/@{HANDLE}/playlists", download=False)
+        listing = ydl.extract_info(
+            f"https://www.youtube.com/@{HANDLE}/playlists", download=False
+        )
     if not listing or listing.get("channel_id") != CHANNEL_ID:
         raise ValueError("Playlist tab channel identity mismatch")
-    skip_titles = {"stream vods", "vods", "shorts", "highlights", "uploads", "past livestreams"}
-    for item in listing.get("entries") or []:
-        if not isinstance(item, dict):
-            continue
-        playlist_id = item.get("id") or ""
-        title = (item.get("title") or "").strip()
-        if not re.fullmatch(r"PL[A-Za-z0-9_-]{10,55}", playlist_id) or not title:
-            continue
-        if title.casefold() in skip_titles:
-            continue
-        thumb_id = None
-        for thumbnail in item.get("thumbnails") or []:
-            match = re.search(r"/vi(?:_webp)?/([A-Za-z0-9_-]{11})/", thumbnail.get("url") or "")
-            if match:
-                thumb_id = match.group(1)
-                break
-        if not thumb_id:
-            continue
-        return {
-            "id": playlist_id,
-            "title": title[:120],
-            "url": "https://www.youtube.com/playlist?list=" + playlist_id,
-            "thumbnailVideoId": thumb_id,
-        }
-    raise ValueError("No usable game playlist with thumbnail found")
+    return select_game_playlist(long_items, listing.get("entries") or [])
 
 
 def build_data(long_items, short_items, dates, previous, featured_playlist):
@@ -196,7 +231,7 @@ def main():
     if {x["id"] for x in long_items} & {x["id"] for x in short_items}:
         raise ValueError("YouTube tabs overlap unexpectedly; preserving previous state")
     try:
-        featured_playlist = current_game_playlist()
+        featured_playlist = current_game_playlist(long_items)
     except Exception as error:
         print(f"Playlist refresh unavailable; preserving last verified selection: {error}")
         featured_playlist = previous.get("featuredPlaylist")
