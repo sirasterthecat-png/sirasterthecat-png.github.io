@@ -21,6 +21,8 @@ The static site has no accounts, custom analytics or backend. **Embedded media d
 GitHub Pages is deployed from `main`, `/(root)`. This public repository is the only location where the scheduled YouTube refresh runs. Never publish credentials or private developer review material.
 
 ## Artwork
+The N64-style cartridge shell is generated art from the project chat, cropped for the website. The channel thumbnails belong to their respective videos. The YouTube platform badge indicates link destinations and does not imply endorsement.
+
 The original files `assets/SirAsterCompressed.png` and `assets/AsterHappy.PNG` are included unchanged. Confirm all appropriate artwork publication rights and attribution separately.
 
 ## Next improvements
