@@ -78,16 +78,8 @@
     const flap = element('span', 'boot-slot-flap');
     // Move the actual power-rocker artwork, including its POWER label,
     // rather than shifting an artificial tab across the stationary switch.
-    const switchWell = element('span', 'boot-power-switch-well');
-    const switchEl = element('img', 'boot-power-switch');
-    switchEl.src = 'assets/n64-power-rocker.webp';
-    switchEl.alt = '';
-    switchEl.width = 108;
-    switchEl.height = 128;
-    switchEl.decoding = 'sync';
     const led = element('span', 'boot-power-led');
-    consoleElement.append(rear, cavity, cartridge, front, flap,
-                          switchWell, switchEl, led);
+    consoleElement.append(rear, cavity, cartridge, front, flap, led);
     const caption = element('p', 'boot-caption');
     caption.textContent = 'INSERTING CARTRIDGE...';
     scene.append(consoleElement, caption);
