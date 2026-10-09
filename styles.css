@@ -57,7 +57,7 @@ section[id], main[id] { scroll-margin-top: 24px; }
 .hero { display: grid; grid-template-columns: 55% 45%; grid-template-rows: auto auto; align-content: center; margin-top: 38px; min-height: 550px; padding: 48px; background: linear-gradient(94deg, #224b77b8, #163c6066 53%, transparent 97%); }
 .hero-heading { grid-column: 1; grid-row: 1; position: relative; z-index: 2; }
 .hero .eyebrow { color: var(--fur); }
-h1 { font-size: clamp(4.3rem, 7.8vw, 6.25rem); font-weight: 530; letter-spacing: -.065em; line-height: .98; color: var(--fur); margin-top: 22px; }
+h1 { font-size: clamp(4.3rem, 7.8vw, 6.25rem); font-weight: 530; letter-spacing: .008em; line-height: 1.12; color: var(--fur); margin-top: 22px; }
 h1 em { color: var(--ice); font-style: normal; }
 .title-star { font-size: .34em; display: inline-block; vertical-align: .45em; margin-left: .5em; color: var(--fur); }
 .hero-copy { grid-column: 1; grid-row: 2; z-index: 2; position: relative; }
@@ -280,7 +280,7 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 .account-links a:hover,.account-links a:focus-visible {
   border-color:var(--ice); background:#21496a88;
 }
-.account-links a>span:first-child { color:var(--ice); }
+.account-links .social-icon { display:block; width:22px; height:22px; flex:none; object-fit:contain; }
 .account-links .twitch-header-status {
   font-size:.65rem; font-weight:700; color:var(--muted); letter-spacing:.02em;
   border-left:1px solid #82b8d955; padding-left:9px;
