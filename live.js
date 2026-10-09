@@ -235,8 +235,12 @@
       if (shorts.some((item) => longIds.has(item.id))) {
         throw new Error('Overlapping video formats in latest feed');
       }
-      const signature = videos.map((item) => item.id).join(',') +
-        '|' + shorts.map((item) => item.id).join(',');
+      // Include metadata as well as IDs so corrections to video titles or
+      // publication dates refresh existing cards without a full page reload.
+      const signature = JSON.stringify([
+        videos.map((item) => [item.id, item.title, item.published || null]),
+        shorts.map((item) => [item.id, item.title, item.published || null])
+      ]);
       if (lastFeedSignature !== signature) {
         stopPreview();
         if (observer) observer.disconnect();
