@@ -1,0 +1,51 @@
+name: Refresh public playlist library
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/update_library.py"
+      - "tests/test_update_library.py"
+      - ".github/workflows/refresh-library.yml"
+  schedule:
+    # Hourly snapshot; GitHub scheduling is best effort.
+    - cron: "29 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-playlist-library-refresh
+  cancel-in-progress: false
+
+jobs:
+  library:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install public YouTube playlist reader
+        run: python -m pip install --disable-pip-version-check 'yt-dlp==2026.8.19'
+      - name: Validate playlist catalog invariants
+        run: python -m unittest discover -s tests -p "test_update_library.py" -v
+      - name: Scan public channel playlist membership
+        run: python scripts/update_library.py
+      - name: Commit only a changed catalog
+        shell: bash
+        run: |
+          if ! git diff --quiet -- data/series.json || [ -n "$(git ls-files --others --exclude-standard -- data/series.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/series.json
+            git commit -m "Refresh complete public playlist library"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            echo "Public playlist library unchanged"
+          fi

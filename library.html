@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-motion="paused">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#030b1d" />
+  <title>Game Library | SirAsterTheCat</title>
+  <meta name="description" content="Browse all public SirAsterTheCat YouTube playlists, sorted by recently detected additions. Insert a game cartridge and start its first video." />
+  <link rel="canonical" href="https://sirasterthecat-png.github.io/library.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SirAsterTheCat" />
+  <meta property="og:title" content="Aster's Game Library | SirAsterTheCat" />
+  <meta property="og:description" content="Choose a cartridge from Aster's complete public playlist collection." />
+  <meta property="og:url" content="https://sirasterthecat-png.github.io/library.html" />
+  <meta property="og:image" content="https://sirasterthecat-png.github.io/assets/social-preview.jpg" />
+  <link rel="icon" href="favicon.ico?v=20261009-transparent-v2" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=20261009-transparent-v2" />
+  <link rel="stylesheet" href="styles.css?v=20261009-library-v1" />
+  <script src="script.js?v=20261008-split-v1" defer></script>
+  <script src="adventure.js?v=20261009-insert-v1" defer></script>
+  <script src="library.js?v=20261009-library-v1" defer></script>
+</head>
+<body data-motion="paused">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="night-clouds" aria-hidden="true"><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div></div>
+  <div id="starfield" class="starfield" aria-hidden="true"></div>
+  <div class="shell">
+    <div class="preview-bar"><span><span class="status-dot" aria-hidden="true"></span> Aster's collection · Public playlists</span></div>
+    <header class="site-header">
+      <a class="brand" href="./#top" aria-label="SirAsterTheCat home"><span class="brand-star" aria-hidden="true">✧</span>SirAster<span>TheCat</span></a>
+      <nav class="navlinks" aria-label="Primary">
+        <a href="./#videos">Videos</a><a href="./#shorts">Shorts</a><a href="library.html" aria-current="page">Game Library</a><a href="./#about">About</a>
+      </nav>
+      <a class="button header-cta" href="https://www.youtube.com/@sirasterthecat/playlists">YouTube playlists <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main" tabindex="-1">
+      <section class="library-hero oot-frame" aria-labelledby="library-title">
+        <p class="eyebrow">EVERY PLAYLIST · ONE COLLECTION</p>
+        <h1 id="library-title">Aster's <em>Game Library.</em></h1>
+        <p>Choose a cartridge to load the first video of its playlist on YouTube. The library includes every public playlist—not just games—and puts newly detected additions first.</p>
+        <a class="text-link" href="./#start">← Back to the featured cartridges</a>
+      </section>
+      <section class="section library-section" id="collection" aria-labelledby="collection-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">SELECT YOUR CARTRIDGE</p><h2 id="collection-title">The collection.</h2></div>
+          <span class="section-number" id="library-count">Loading...</span>
+        </div>
+        <div class="library-controls">
+          <label for="library-search">Find a playlist<input id="library-search" type="search" placeholder="Search all public playlists…" autocomplete="off" /></label>
+          <label for="library-sort">Sort by<select id="library-sort">
+            <option value="activity">Recently updated</option>
+            <option value="name">Name A–Z</option>
+            <option value="episodes">Most videos</option>
+          </select></label>
+        </div>
+        <p id="library-status" class="library-status" role="status" aria-live="polite">Loading public playlists…</p>
+        <div id="library-grid" class="library-grid" aria-label="YouTube playlists"></div>
+        <button type="button" id="library-more" class="button library-more" hidden>Load more cartridges ↓</button>
+        <p class="library-footnote">"Recently updated" uses playlist additions observed during website checks. The first import is approximately ordered by the channel's public Playlists tab; YouTube does not expose reliable historical addition times. Some older or unavailable playlists may open their YouTube playlist page instead.</p>
+      </section>
+    </main>
+    <footer><div><a class="footer-brand" href="./#top">SirAsterTheCat <span aria-hidden="true">✧</span></a><p>© 2026 SirAsterTheCat. Official website · Public beta.</p></div><p>Original Aster character artwork.<br />Sky &amp; glass made with CSS; the cartridge shell is AI-generated.</p></footer>
+  </div>
+</body>
+</html>

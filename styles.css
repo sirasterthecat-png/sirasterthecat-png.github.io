@@ -515,3 +515,144 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   .cartridge-link:hover .cartridge-label-area,
   .cartridge-link:focus-visible .cartridge-label-area { transform: none; }
 }
+
+
+/* Phase 3: public playlist library; same dark-glass and N64 cartridge system. */
+.library-hero {
+  position:relative; isolation:isolate; overflow:hidden;
+  margin-top:28px; padding:clamp(28px,5vw,58px);
+  background:linear-gradient(115deg,#173c64d6,#0a1c39 82%);
+}
+.library-hero::after {
+  content:"✧"; position:absolute; right:7%; top:2%;
+  color:#76fff840; font-size:clamp(6rem,20vw,13rem); pointer-events:none;
+}
+.library-hero .eyebrow { letter-spacing:.17em; color:var(--ice); }
+.library-hero h1 {
+  font-size:clamp(2.7rem,6vw,5.3rem); line-height:1.15;
+  letter-spacing:0; margin:18px 0 12px;
+  max-width:750px; position:relative; z-index:1;
+}
+.library-hero p:not(.eyebrow) {
+  max-width:700px; color:var(--copy); font-size:1rem;
+  position:relative; z-index:1; line-height:1.8;
+}
+.library-hero .text-link {display:inline-block;margin-top:22px;position:relative;z-index:1;}
+.library-controls { display:flex; flex-wrap:wrap; gap:16px; align-items:end; margin-bottom:20px; }
+.library-controls label {display:flex;flex:1 1 270px; flex-direction:column;gap:7px;color:var(--fur);font-size:.78rem;font-weight:650;}
+.library-controls label:last-child {flex:0 1 225px;}
+.library-controls input,.library-controls select {
+  display:block; width:100%; background:#071b34;color:var(--white);
+  border:1px solid #6face27a;border-radius:7px;padding:12px 13px;
+  min-height:45px;font:inherit;font-size:.91rem;
+}
+.library-controls input:focus-visible,.library-controls select:focus-visible {
+  outline:2px solid var(--ice);outline-offset:3px;
+}
+.library-status {color:var(--copy);font-size:.88rem;min-height:1.5em;margin-bottom:7px;}
+.library-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;}
+.library-card {
+  position:relative; min-width:0;overflow:hidden;
+  padding:13px 10px 17px; border:1px solid #6face249;
+  border-radius:9px;background:linear-gradient(150deg,#18395a90,#091c3580);
+  transition:border-color .2s;
+}
+.library-card:hover,.library-card:focus-within {border-color:var(--ice);}
+.library-card .cartridge-link {width:min(100%,260px);}
+.library-card .cartridge-label-area {border-width:1px;}
+.library-card-copy {padding:10px 7px 0;}
+.library-card-copy h3 {
+  font-size:.93rem;line-height:1.4;overflow-wrap:anywhere;color:var(--white);
+}
+.library-card-copy p {margin-top:5px;font-size:.73rem;color:var(--copy);}
+.library-more {display:block; margin:30px auto 0; min-height:44px;}
+.library-more[hidden] {display:none;}
+.library-footnote {margin:25px auto 0;max-width:870px;font-size:.76rem;line-height:1.7;color:var(--muted);}
+
+/* Cartridge launch is confined to the chosen cartridge panel, not the whole page. */
+.adventure-grid,.library-card {position:relative;}
+.adventure-grid.is-booting > .adventure-choice {opacity:.14;transition:opacity .26s;}
+.library-card.is-booting > .cartridge-link,
+.library-card.is-booting > .library-card-copy {opacity:.1;transition:opacity .26s;}
+.cartridge-boot-overlay {
+  position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;
+  overflow:hidden; padding:12px; background:radial-gradient(ellipse at 50% 40%,#1f5480f5,#051227ef 74%);
+  border:1px solid #76fff88a;border-radius:9px;
+  animation:boot-arrive .2s ease-out both;
+}
+.cartridge-boot-overlay.boot-finished {opacity:0;transition:opacity .38s ease;}
+.boot-scene {position:relative;width:min(100%,330px);height:min(250px,100%);min-height:180px;}
+.boot-console {
+  position:absolute;left:50%;top:40%;width:74%;height:42%;min-height:72px;
+  transform:translateX(-50%);filter:drop-shadow(0 16px 12px #0107149e);
+}
+.boot-console-top {
+  width:100%;height:75%;background:linear-gradient(165deg,#b9bbc7,#737785 62%,#454a57);
+  clip-path:polygon(12% 0,88% 0,100% 75%,93% 100%,7% 100%,0 75%);
+  border-radius:30% 30% 8px 8px;
+}
+.boot-slot {
+  position:absolute;top:9%;left:31%;width:38%;height:17%;
+  background:#101724;border:3px solid #535968;box-shadow:inset 0 3px 5px #030715;
+  border-radius:50%;transform:scaleY(.65);
+}
+.boot-console-front {
+  height:34%;margin:-5% 10% 0;border-radius:6px 6px 22px 22px;
+  background:linear-gradient(#8c919f,#535866);position:relative;
+  border-bottom:3px solid #252d3d;display:flex;align-items:center;justify-content:space-around;
+}
+.boot-n64-mark {font-size:.63rem;letter-spacing:.1em;font-weight:900;color:#26344d;}
+.boot-power-light {width:7px;height:7px;background:#62ff7a;border-radius:50%;box-shadow:0 0 12px #70ffa0;}
+.boot-controller-ports {display:flex;gap:5px;}
+.boot-controller-ports i {width:10px;height:5px;background:#252e3d;border:1px solid #b8bdc8;border-radius:6px;}
+.boot-cartridge {
+  position:absolute;left:50%;top:-8%;width:42%;aspect-ratio:1231/794;
+  transform-origin:center 80%;z-index:2;pointer-events:none;
+  animation:boot-insert .88s cubic-bezier(.42,.01,.17,1) .1s forwards;
+}
+.boot-cartridge .cartridge-image-wrap,.boot-cartridge .library-cartridge-art {
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+}
+.boot-cartridge .cartridge-shell,.boot-cartridge > img {width:100%;height:100%;object-fit:contain;}
+.boot-cartridge .cartridge-label-area {border-width:1px;}
+.boot-caption {
+  position:absolute;bottom:-4px;width:100%;text-align:center;
+  color:var(--ice);font-size:.68rem;letter-spacing:.19em;font-weight:800;
+  text-shadow:0 1px 8px #06162d;
+}
+.boot-caption a {display:inline-block;padding:9px;pointer-events:auto;color:var(--ice);text-decoration:underline;}
+@keyframes boot-arrive {from{opacity:0}to{opacity:1}}
+@keyframes boot-insert {
+  0% {transform:translate(-50%,-65%) rotate(-8deg) scale(1);opacity:1;}
+  40% {transform:translate(-50%,6%) rotate(0) scale(.96);opacity:1;}
+  85% {transform:translate(-50%,82%) scale(.73);opacity:1;}
+  100% {transform:translate(-50%,92%) scale(.68);opacity:.18;}
+}
+@media(max-width:1050px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:680px){
+  .library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .library-card{padding:10px 7px 13px;}
+  .library-card-copy{padding:7px 5px 0;}
+  .library-card-copy h3{font-size:.82rem;}
+  .library-card-copy p{font-size:.68rem;}
+  .library-controls label:last-child{flex:1 1 180px;}
+  .library-hero{padding:28px 22px;}
+  .library-hero h1{font-size:clamp(2.4rem,9vw,3.6rem);}
+  .boot-scene{height:180px;min-height:150px;}
+  .boot-caption{letter-spacing:.08em;font-size:.58rem;}
+  .boot-controller-ports i{width:6px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .cartridge-boot-overlay,.boot-cartridge{animation:none;}
+  .library-card,.adventure-choice{transition:none;}
+}
+
+
+.adventure-library-cta {
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;margin-top:18px;padding:16px 22px;
+  color:var(--fur);background:#122f5088;border:1px solid #6face240;
+  border-radius:8px;font-size:.89rem;
+}
+.adventure-library-cta .button{font-size:.8rem;}
+@media(max-width:680px){.adventure-library-cta{justify-content:center;text-align:center;}}

@@ -26,8 +26,8 @@
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"ProfilePage","name":"SirAsterTheCat — Aster | Gaming Under the Stars","url":"https://sirasterthecat-png.github.io/","mainEntity":{"@type":"Person","name":"SirAsterTheCat","alternateName":"Aster","description":"Furry gaming creator sharing playthroughs, highlights, Shorts, and streams.","url":"https://sirasterthecat-png.github.io/","sameAs":["https://www.youtube.com/@sirasterthecat"]}}
   </script>
-  <script src="adventure.js?v=20261009-cartridge-v1" defer></script>
-  <link rel="stylesheet" href="styles.css?v=20261009-social-logos-hero-v1" />
+  <script src="adventure.js?v=20261009-insert-v1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261009-library-v1" />
   <script src="script.js?v=20261008-split-v1" defer></script>
   <script src="live.js?v=20261009-phase2-metadata-v1" defer></script>
 </head>
@@ -40,7 +40,7 @@
     <header class="site-header">
       <a class="brand" href="#top" aria-label="SirAsterTheCat home"><span class="brand-star" aria-hidden="true">✧</span>SirAster<span>TheCat</span></a>
       <nav class="navlinks" aria-label="Primary">
-        <a href="#videos">Videos</a><a href="#shorts">Shorts</a><a href="#series">Explore</a><a href="#about">About</a>
+        <a href="#videos">Videos</a><a href="#shorts">Shorts</a><a href="library.html">Game Library</a><a href="#about">About</a>
       </nav>
       <a class="button header-cta" href="https://www.youtube.com/@sirasterthecat">Watch videos <span aria-hidden="true">↗</span></a>
     </header>
@@ -63,10 +63,10 @@
           <div><p class="eyebrow">Choose your first adventure</p><h2 id="start-title">Pick a cartridge.</h2></div>
           <span class="section-number" aria-hidden="true">01 / START HERE</span>
         </div>
-        <p class="section-intro">Three ways into Aster's world. Tap a cartridge to jump to YouTube—no automatic playback.</p>
+        <p class="section-intro">Choose a cartridge to load a video or playlist. Watch it slide into the N64 before YouTube opens in a new tab.</p>
         <div class="adventure-grid">
         <article class="adventure-choice">
-          <a class="cartridge-link" href="https://www.youtube.com/watch?v=6nBUsno2xdk" target="_blank" rel="noopener noreferrer" aria-label="Watch Welcome To My Channel!! on YouTube">
+          <a class="cartridge-link" data-cartridge-launch href="https://www.youtube.com/watch?v=6nBUsno2xdk" target="_blank" rel="noopener noreferrer" aria-label="Watch Welcome To My Channel!! on YouTube">
             <span class="cartridge-image-wrap" aria-hidden="true">
               <img class="cartridge-shell" src="assets/n64-cartridge-shell.png" width="1231" height="794" loading="lazy" decoding="async" alt="" />
               <span class="cartridge-label-area">
@@ -82,7 +82,7 @@
           </div>
         </article>
         <article class="adventure-choice">
-          <a class="cartridge-link" href="https://www.youtube.com/watch?v=W7Ayk9wRLr0" target="_blank" rel="noopener noreferrer" aria-label="Watch GAMBLING HIGHLIGHT REEL on YouTube">
+          <a class="cartridge-link" data-cartridge-launch href="https://www.youtube.com/watch?v=W7Ayk9wRLr0" target="_blank" rel="noopener noreferrer" aria-label="Watch GAMBLING HIGHLIGHT REEL on YouTube">
             <span class="cartridge-image-wrap" aria-hidden="true">
               <img class="cartridge-shell" src="assets/n64-cartridge-shell.png" width="1231" height="794" loading="lazy" decoding="async" alt="" />
               <span class="cartridge-label-area">
@@ -98,7 +98,7 @@
           </div>
         </article>
         <article class="adventure-choice">
-          <a class="cartridge-link" id="cartridge-current" href="https://www.youtube.com/playlist?list=PLAL-C7T4V304" target="_blank" rel="noopener noreferrer" aria-label="Open Rocket League YouTube playlist">
+          <a class="cartridge-link" data-cartridge-launch id="cartridge-current" href="https://www.youtube.com/watch?v=sT20SAAtGvo&amp;list=PLAL-C7T4V304&amp;index=1&amp;autoplay=1" target="_blank" rel="noopener noreferrer" aria-label="Start Rocket League playlist on YouTube">
             <span class="cartridge-image-wrap" aria-hidden="true">
               <img class="cartridge-shell" src="assets/n64-cartridge-shell.png" width="1231" height="794" loading="lazy" decoding="async" alt="" />
               <span class="cartridge-label-area">
@@ -114,6 +114,7 @@
           </div>
         </article>
         </div>
+        <div class="adventure-library-cta"><p>Looking for another game? The whole collection is waiting.</p><a class="button" href="library.html">Browse all 54+ playlists <span aria-hidden="true">↗</span></a></div>
       </section>
       <section class="section twitch-section" id="live" aria-labelledby="live-title">
         <div class="section-heading">
@@ -152,7 +153,7 @@
       </section>
       <section class="section" id="series" aria-labelledby="explore-title">
         <div class="section-heading"><div><p class="eyebrow">Choose your path</p><h2 id="explore-title">Stay a little longer.</h2></div><span class="section-number" aria-hidden="true">02 / EXPLORE</span></div>
-        <div class="path-grid"><a class="path oot-frame" href="https://www.youtube.com/@sirasterthecat/playlists"><span class="path-symbol" aria-hidden="true">☾</span><div><h3>Find a series</h3><p>Browse Aster’s playlists and settle into a playthrough.</p></div><span class="path-arrow" aria-hidden="true">↗</span></a><a class="path oot-frame" href="https://www.youtube.com/@sirasterthecat"><span class="path-symbol" aria-hidden="true">✧</span><div><h3>Visit the channel</h3><p>See what’s happening in Aster’s corner of YouTube.</p></div><span class="path-arrow" aria-hidden="true">↗</span></a></div>
+        <div class="path-grid"><a class="path oot-frame" href="library.html"><span class="path-symbol" aria-hidden="true">☾</span><div><h3>Find a series</h3><p>Browse Aster’s playlists and settle into a playthrough.</p></div><span class="path-arrow" aria-hidden="true">↗</span></a><a class="path oot-frame" href="https://www.youtube.com/@sirasterthecat"><span class="path-symbol" aria-hidden="true">✧</span><div><h3>Visit the channel</h3><p>See what’s happening in Aster’s corner of YouTube.</p></div><span class="path-arrow" aria-hidden="true">↗</span></a></div>
       </section>
       <section class="about oot-frame" id="about" aria-labelledby="about-title">
         <div class="about-art">
