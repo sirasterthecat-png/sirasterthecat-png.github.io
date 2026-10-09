@@ -569,64 +569,93 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 .library-more[hidden] {display:none;}
 .library-footnote {margin:25px auto 0;max-width:870px;font-size:.76rem;line-height:1.7;color:var(--muted);}
 
-/* Cartridge launch is confined to the chosen cartridge panel, not the whole page. */
+/* Cartridge launch: the approved front-facing N64 render, with a switch
+   and authentic red front power light animated over the image. */
 .adventure-grid,.library-card {position:relative;}
-.adventure-grid.is-booting > .adventure-choice {opacity:.14;transition:opacity .26s;}
+.adventure-grid.is-booting > .adventure-choice {opacity:.10;transition:opacity .24s;}
 .library-card.is-booting > .cartridge-link,
-.library-card.is-booting > .library-card-copy {opacity:.1;transition:opacity .26s;}
+.library-card.is-booting > .library-card-copy {opacity:.08;transition:opacity .24s;}
 .cartridge-boot-overlay {
-  position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;
-  overflow:hidden; padding:12px; background:radial-gradient(ellipse at 50% 40%,#1f5480f5,#051227ef 74%);
+  position:absolute;inset:0;z-index:10;display:flex;
+  align-items:center;justify-content:center;overflow:hidden;
+  padding:8px;background:radial-gradient(ellipse at 50% 35%,#1e4d78ed,#050e25f4 82%);
   border:1px solid #76fff88a;border-radius:9px;
-  animation:boot-arrive .2s ease-out both;
+  animation:boot-arrive .18s ease-out both;
 }
-.cartridge-boot-overlay.boot-finished {opacity:0;transition:opacity .38s ease;}
-.boot-scene {position:relative;width:min(100%,330px);height:min(250px,100%);min-height:180px;}
-.boot-console {
-  position:absolute;left:50%;top:40%;width:74%;height:42%;min-height:72px;
-  transform:translateX(-50%);filter:drop-shadow(0 16px 12px #0107149e);
+.cartridge-boot-overlay.boot-finished {
+  opacity:0;transition:opacity .4s ease-in;
 }
-.boot-console-top {
-  width:100%;height:75%;background:linear-gradient(165deg,#b9bbc7,#737785 62%,#454a57);
-  clip-path:polygon(12% 0,88% 0,100% 75%,93% 100%,7% 100%,0 75%);
-  border-radius:30% 30% 8px 8px;
+.boot-scene {
+  position:relative;width:min(100%,350px);height:min(270px,100%);
+  min-height:145px;isolation:isolate;
 }
-.boot-slot {
-  position:absolute;top:9%;left:31%;width:38%;height:17%;
-  background:#101724;border:3px solid #535968;box-shadow:inset 0 3px 5px #030715;
-  border-radius:50%;transform:scaleY(.65);
+.boot-console-visual {
+  position:absolute;z-index:2;left:50%;bottom:17px;
+  width:min(100%,340px);aspect-ratio:1448/1086;
+  transform:translateX(-50%);pointer-events:none;
+  filter:drop-shadow(0 9px 11px #0008);
 }
-.boot-console-front {
-  height:34%;margin:-5% 10% 0;border-radius:6px 6px 22px 22px;
-  background:linear-gradient(#8c919f,#535866);position:relative;
-  border-bottom:3px solid #252d3d;display:flex;align-items:center;justify-content:space-around;
+.boot-console-image {
+  display:block;width:100%;height:100%;object-fit:contain;
 }
-.boot-n64-mark {font-size:.63rem;letter-spacing:.1em;font-weight:900;color:#26344d;}
-.boot-power-light {width:7px;height:7px;background:#62ff7a;border-radius:50%;box-shadow:0 0 12px #70ffa0;}
-.boot-controller-ports {display:flex;gap:5px;}
-.boot-controller-ports i {width:10px;height:5px;background:#252e3d;border:1px solid #b8bdc8;border-radius:6px;}
+.boot-power-switch {
+  position:absolute;left:22%;top:49.1%;width:5.7%;height:3.5%;
+  border-radius:38%;border:1px solid #090b10;
+  background:linear-gradient(#777982,#373943 65%,#1b1d23);
+  box-shadow:inset 0 1px 2px #dddddd78,0 1px 2px #0a1017;
+  transform:translateY(3px);
+  transition:transform .17s ease;
+}
+.boot-power-led {
+  position:absolute;left:47.3%;top:75.7%;width:4.2%;height:1.7%;
+  border-radius:999px;opacity:0;background:#f71921;
+  box-shadow:0 0 6px 3px #fb1426bc,0 0 18px 9px #ff172f6b;
+  transition:opacity .08s linear;
+}
+.boot-scene.boot-powered .boot-power-switch {transform:translateY(-5px);}
+.boot-scene.boot-powered .boot-power-led {opacity:1;}
+.boot-scene.boot-powered-off .boot-power-switch {transform:translateY(3px);}
+.boot-scene.boot-powered-off .boot-power-led {opacity:0;}
 .boot-cartridge {
-  position:absolute;left:50%;top:-8%;width:42%;aspect-ratio:1231/794;
-  transform-origin:center 80%;z-index:2;pointer-events:none;
-  animation:boot-insert .88s cubic-bezier(.42,.01,.17,1) .1s forwards;
+  position:absolute;z-index:1;left:50%;top:-6%;
+  width:34%;aspect-ratio:1231/794;pointer-events:none;
+  transform:translateX(-50%) rotate(-4deg);
+  animation:boot-seat 1.1s cubic-bezier(.27,.05,.15,1) .08s forwards;
 }
 .boot-cartridge .cartridge-image-wrap,.boot-cartridge .library-cartridge-art {
   position:absolute;inset:0;display:block;width:100%;height:100%;
 }
-.boot-cartridge .cartridge-shell,.boot-cartridge > img {width:100%;height:100%;object-fit:contain;}
-.boot-cartridge .cartridge-label-area {border-width:1px;}
-.boot-caption {
-  position:absolute;bottom:-4px;width:100%;text-align:center;
-  color:var(--ice);font-size:.68rem;letter-spacing:.19em;font-weight:800;
-  text-shadow:0 1px 8px #06162d;
+.boot-cartridge .cartridge-shell,.boot-cartridge > img {
+  width:100%;height:100%;object-fit:contain;
 }
-.boot-caption a {display:inline-block;padding:9px;pointer-events:auto;color:var(--ice);text-decoration:underline;}
+.boot-cartridge .cartridge-label-area {border-width:1px;}
+.boot-scene.boot-eject .boot-cartridge {
+  animation:boot-eject .7s cubic-bezier(.15,.8,.2,1) both;
+}
+.boot-caption {
+  position:absolute;z-index:4;bottom:0;left:0;right:0;
+  text-align:center;color:var(--ice);
+  font-size:.7rem;letter-spacing:.17em;font-weight:800;
+  text-shadow:0 2px 8px #06162d;
+}
+.boot-caption a {display:inline-block;padding:10px;color:var(--ice);text-decoration:underline;}
+.boot-blocked-note {
+  margin:8px 0;padding:9px 12px;color:var(--fur);
+  background:#081c38;border:1px solid #76fff8aa;
+  border-radius:5px;font-size:.8rem;
+}
+.boot-blocked-note a {color:var(--ice);text-decoration:underline;}
 @keyframes boot-arrive {from{opacity:0}to{opacity:1}}
-@keyframes boot-insert {
-  0% {transform:translate(-50%,-65%) rotate(-8deg) scale(1);opacity:1;}
-  40% {transform:translate(-50%,6%) rotate(0) scale(.96);opacity:1;}
-  85% {transform:translate(-50%,82%) scale(.73);opacity:1;}
-  100% {transform:translate(-50%,92%) scale(.68);opacity:.18;}
+@keyframes boot-seat {
+  0% {top:-6%;transform:translateX(-50%) rotate(-4deg);opacity:1;}
+  45% {top:2%;transform:translateX(-50%) rotate(0deg);opacity:1;}
+  80% {top:17%;transform:translateX(-50%) rotate(0deg);opacity:1;}
+  100% {top:21%;transform:translateX(-50%) rotate(0deg);opacity:.85;}
+}
+@keyframes boot-eject {
+  0% {top:21%;transform:translateX(-50%) rotate(0deg);opacity:.85;}
+  60% {top:0%;transform:translateX(-50%) rotate(0deg);opacity:1;}
+  100% {top:-6%;transform:translateX(-50%) rotate(-4deg);opacity:1;}
 }
 @media(max-width:1050px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media(max-width:680px){
@@ -640,7 +669,8 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   .library-hero h1{font-size:clamp(2.4rem,9vw,3.6rem);}
   .boot-scene{height:180px;min-height:150px;}
   .boot-caption{letter-spacing:.08em;font-size:.58rem;}
-  .boot-controller-ports i{width:6px;}
+  .boot-console-visual{bottom:14px;}
+  .boot-power-switch{border-width:0;}
 }
 @media(prefers-reduced-motion:reduce){
   .cartridge-boot-overlay,.boot-cartridge{animation:none;}
