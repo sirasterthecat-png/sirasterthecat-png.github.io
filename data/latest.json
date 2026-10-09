@@ -1,7 +1,14 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-08T18:50:26+00:00",
+  "updatedAt": "2026-10-09T15:47:25+00:00",
   "longform": [
+    {
+      "id": "sT20SAAtGvo",
+      "title": "Kicking off with ROCKET LEAGUE!! | Rocket League Ep 1",
+      "published": "2026-10-09T15:00:33+00:00",
+      "url": "https://www.youtube.com/watch?v=sT20SAAtGvo",
+      "thumbnail": "https://i.ytimg.com/vi/sT20SAAtGvo/hqdefault.jpg"
+    },
     {
       "id": "5BsV3A75U0A",
       "title": "Fallin' To My Knees~ | Fall Guys Ep 2",
@@ -36,16 +43,16 @@
       "published": null,
       "url": "https://www.youtube.com/watch?v=kCQ3QjBGdnQ",
       "thumbnail": "https://i.ytimg.com/vi/kCQ3QjBGdnQ/hqdefault.jpg"
-    },
-    {
-      "id": "05H6nQ8lXF4",
-      "title": "Aster's Disaster... | No Man's Sky Ep 3",
-      "published": null,
-      "url": "https://www.youtube.com/watch?v=05H6nQ8lXF4",
-      "thumbnail": "https://i.ytimg.com/vi/05H6nQ8lXF4/hqdefault.jpg"
     }
   ],
   "shorts": [
+    {
+      "id": "aJ-vOMcnV48",
+      "title": "What Glitch Is That",
+      "published": "2026-10-09T15:00:37+00:00",
+      "url": "https://www.youtube.com/shorts/aJ-vOMcnV48",
+      "thumbnail": "https://i.ytimg.com/vi/aJ-vOMcnV48/oar2.jpg"
+    },
     {
       "id": "gHIVJ1O2zio",
       "title": "Let's Go Get Some Hookers",
@@ -80,13 +87,12 @@
       "published": "2026-10-04T15:00:10+00:00",
       "url": "https://www.youtube.com/shorts/4L4-7wHLmJ8",
       "thumbnail": "https://i.ytimg.com/vi/4L4-7wHLmJ8/oar2.jpg"
-    },
-    {
-      "id": "8C5GW7wI_TY",
-      "title": "Christian Gambling",
-      "published": "2026-10-01T15:00:12+00:00",
-      "url": "https://www.youtube.com/shorts/8C5GW7wI_TY",
-      "thumbnail": "https://i.ytimg.com/vi/8C5GW7wI_TY/oar2.jpg"
     }
-  ]
+  ],
+  "featuredPlaylist": {
+    "id": "PLAL-C7T4V304",
+    "title": "Rocket League",
+    "url": "https://www.youtube.com/playlist?list=PLAL-C7T4V304",
+    "thumbnailVideoId": "sT20SAAtGvo"
+  }
 }
