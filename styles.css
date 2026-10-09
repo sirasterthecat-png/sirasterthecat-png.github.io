@@ -650,24 +650,6 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 /* The real POWER-labelled rocker is a transparent sprite cropped from
    the approved console render. The shadowed well hides the static
    switch under it so the entire moving part rocks together. */
-.boot-power-switch-well {
-  position:absolute;z-index:6;
-  left:19.65%;top:42.35%;width:8.75%;height:15.1%;
-  border-radius:45% 42% 41% 43%;
-  background:linear-gradient(160deg,#151517,#222326 45%,#080809);
-  box-shadow:inset 0 2px 4px #050506,inset 1px 0 2px #050506,
-             0 0 1px 1px #66686b67;
-  pointer-events:none;
-}
-.boot-power-switch {
-  position:absolute;z-index:7;
-  left:20.165%;top:45.3%;width:7.46%;height:11.79%;
-  object-fit:contain;pointer-events:none;
-  transform-origin:50% 45%;
-  transform:translateY(0) rotateX(0deg);
-  filter:drop-shadow(0 2px 1px #08080acc);
-  transition:transform .19s cubic-bezier(.2,.8,.25,1);
-}
 .boot-power-led {
   position:absolute;z-index:6;left:47.3%;top:75.7%;
   width:4.2%;height:1.7%;border-radius:999px;
@@ -675,13 +657,7 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   box-shadow:0 0 6px 3px #fb1426bc,0 0 18px 9px #ff172f6b;
   transition:opacity .08s linear;
 }
-.boot-scene.boot-powered .boot-power-switch {
-  transform:translateY(-19%) rotateX(-10deg);
-}
 .boot-scene.boot-powered .boot-power-led {opacity:1;}
-.boot-scene.boot-powered-off .boot-power-switch {
-  transform:translateY(0) rotateX(0deg);
-}
 .boot-scene.boot-powered-off .boot-power-led {opacity:0;}
 .boot-scene.boot-eject .boot-cartridge {
   animation:boot-eject .68s cubic-bezier(.16,.84,.21,1) both;
@@ -706,12 +682,12 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 @keyframes boot-seat {
   0%   {top:-32%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
   50%  {top:-5%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
-  72%  {top:8%;transform:translateX(-50%);clip-path:inset(0 0 40% 0);}
-  100% {top:21.5%;transform:translateX(-50%);clip-path:inset(0 0 76% 0);}
+  72%  {top:5%;transform:translateX(-50%);clip-path:inset(0 0 29% 0);}
+  100% {top:15%;transform:translateX(-50%);clip-path:inset(0 0 60% 0);}
 }
 @keyframes boot-eject {
-  0%   {top:21.5%;transform:translateX(-50%);clip-path:inset(0 0 76% 0);}
-  34%  {top:8%;transform:translateX(-50%);clip-path:inset(0 0 40% 0);}
+  0%   {top:15%;transform:translateX(-50%);clip-path:inset(0 0 60% 0);}
+  34%  {top:5%;transform:translateX(-50%);clip-path:inset(0 0 29% 0);}
   65%  {top:-5%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
   100% {top:-32%;transform:translateX(-50%);clip-path:inset(0 0 0 0);}
 }
