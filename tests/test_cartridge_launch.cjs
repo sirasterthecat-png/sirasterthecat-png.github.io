@@ -29,6 +29,19 @@ function harness(blockPopup=false, reducedMotion=false) {
     e.appendChild=e.append;
     e.replaceChildren=(...items)=>{e.children=[];e.textContent='';e.append(...items)};
     e.cloneNode=()=>make(tag);
+    e.querySelectorAll=(selector)=>{
+      if(selector!=='img')return [];
+      const results=[];
+      const visit=node=>{
+        for(const child of node.children){
+          if(!child||typeof child!=='object')continue;
+          if(child.tag==='img')results.push(child);
+          visit(child);
+        }
+      };
+      visit(e);
+      return results;
+    };
     e.addEventListener=(kind,fn)=>e.listeners[kind]=fn;
     e.querySelector=selector=>{
       if(selector==='.boot-blocked-note')return e.children.find(x=>x?.className==='boot-blocked-note')||null;
@@ -141,9 +154,10 @@ test('Reduced motion uses the normal link without animation or scripted popup',(
   assert.equal(h.find('cartridge-boot-overlay'),null);
 });
 test('Original N64 art is stacked around the centered cartridge and dust flap',()=>{
-  assert.match(js,/consoleElement\.append\(rear, cavity, cartridge, front, flap, switchEl, led\)/);
+  assert.match(js,/consoleElement\.append\(rear, cavity, cartridge, front, flap,\s*switchWell, switchEl, led\)/);
   assert.match(css,/\.boot-console-back\s*\{z-index:1;/);
   assert.match(css,/\.boot-cartridge\s*\{[^}]*z-index:3;left:50%/s);
+  assert.match(css,/\.boot-cartridge\s*\{[^}]*width:42%/s);
   assert.match(css,/\.boot-console-front\s*\{z-index:4;clip-path:inset\(29\.7%/);
   assert.match(css,/\.boot-slot-flap\s*\{[^}]*background:url\("assets\/n64-console-front\.webp"\)/s);
   assert.match(css,/\.boot-scene\.boot-slot-open \.boot-slot-flap\s*\{[^}]*rotateX\(-78deg\)/s);
@@ -153,4 +167,14 @@ test('Cartridge enters and ejects vertically with no tilt or diagonal drift',()=
   assert.doesNotMatch(frame,/rotate\s*\(/);
   assert.match(frame,/100% \{top:15%;transform:translateX\(-50%\);clip-path:inset\(0 0 60% 0\)/);
   assert.match(frame,/100% \{top:-32%;transform:translateX\(-50%\);clip-path:inset\(0 0 0 0\)/);
+});
+
+test('Full-size cropped thumbnails survive cloning with eager image loading',()=>{
+  assert.match(js,/img\.loading = 'eager'/);
+  assert.match(js,/img\.src = sources\[i\]\.currentSrc/);
+  assert.match(css,/\.cartridge-picture img\s*\{[^}]*object-fit: cover/s);
+  assert.doesNotMatch(css,/\.cartridge-platform\s*\{/);
+  assert.match(js,/assets\/n64-power-rocker\.webp/);
+  assert.match(css,/\.boot-power-switch-well\s*\{/);
+  assert.match(css,/\.boot-scene\.boot-powered \.boot-power-switch\s*\{[^}]*translateY\(-19%\)/s);
 });

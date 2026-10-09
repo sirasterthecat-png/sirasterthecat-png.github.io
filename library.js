@@ -63,12 +63,7 @@
     thumb.loading = 'lazy';
     thumb.decoding = 'async';
     picture.appendChild(thumb);
-    const platform = make('span', 'cartridge-platform');
-    const logo = make('img');
-    logo.src = 'assets/youtube-mark.svg';
-    logo.alt = '';
-    platform.append(logo, make('span', '', 'YouTube'));
-    label.append(picture, platform);
+    label.appendChild(picture);
     wrap.append(shell, label);
     link.appendChild(wrap);
 

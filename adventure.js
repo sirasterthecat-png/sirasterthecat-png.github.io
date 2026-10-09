@@ -51,8 +51,20 @@
     const cavity = element('span', 'boot-slot-cavity');
     const cartridge = element('div', 'boot-cartridge');
     const original = link.querySelector('.cartridge-image-wrap, .library-cartridge-art');
-    if (original) cartridge.appendChild(original.cloneNode(true));
-    else {
+    if (original) {
+      const artwork = original.cloneNode(true);
+      // Cloned lazy images are new loading candidates. Force the selected
+      // video's real thumbnail into the tiny animation window immediately.
+      const sources = original.querySelectorAll('img');
+      artwork.querySelectorAll('img').forEach((img, i) => {
+        img.loading = 'eager';
+        img.decoding = 'sync';
+        if (sources[i] && sources[i].currentSrc) {
+          img.src = sources[i].currentSrc;
+        }
+      });
+      cartridge.appendChild(artwork);
+    } else {
       const shell = element('img', 'boot-cartridge-shell');
       shell.src = 'assets/n64-cartridge-shell.png';
       shell.alt = '';
@@ -64,9 +76,18 @@
     // The flap itself is a pixel-accurate CSS crop of the approved light-gray
     // slot cover, animated as a small downward-folding hinged piece.
     const flap = element('span', 'boot-slot-flap');
-    const switchEl = element('span', 'boot-power-switch');
+    // Move the actual power-rocker artwork, including its POWER label,
+    // rather than shifting an artificial tab across the stationary switch.
+    const switchWell = element('span', 'boot-power-switch-well');
+    const switchEl = element('img', 'boot-power-switch');
+    switchEl.src = 'assets/n64-power-rocker.webp';
+    switchEl.alt = '';
+    switchEl.width = 108;
+    switchEl.height = 128;
+    switchEl.decoding = 'sync';
     const led = element('span', 'boot-power-led');
-    consoleElement.append(rear, cavity, cartridge, front, flap, switchEl, led);
+    consoleElement.append(rear, cavity, cartridge, front, flap,
+                          switchWell, switchEl, led);
     const caption = element('p', 'boot-caption');
     caption.textContent = 'INSERTING CARTRIDGE...';
     scene.append(consoleElement, caption);

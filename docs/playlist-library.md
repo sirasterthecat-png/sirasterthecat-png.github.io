@@ -21,3 +21,9 @@ The [Game Library](https://sirasterthecat-png.github.io/library.html) is a separ
 - Reduced-motion preferences and modifier-clicks keep native immediate links without the animation. On a blocked popup, no fake success notification is shown.
 
 - No account access, paid API, external JS framework, user tracking, or replacement of original character artwork was added.
+
+## Cartridge artwork polish (2026-10-09)
+
+- The YouTube badge and its dark strip are removed from both homepage and library cartridge stickers. One real YouTube thumbnail is cropped with `object-fit: cover` to fill the label niche edge-to-edge, including during the animated cartridge insertion. Animation clones request image resources eagerly rather than inheriting delayed lazy loading.
+- The animated cartridge width is 42% of the N64 console artwork, up from 34%; this remains just under the approximately 42.95%-wide slot opening.
+- The decorative power-switch nub has been replaced by a cropped sprite from the original approved N64 render (`assets/n64-power-rocker.webp`). The *whole* POWER-labelled rocker moves inside a masked dark switch well. LED and popup logic are unchanged.

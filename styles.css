@@ -477,23 +477,25 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   filter: drop-shadow(0 12px 13px #02091690);
 }
 .cartridge-label-area {
-  position: absolute; left: 26.1%; right: 26.1%; top: 17.8%; bottom: 16.9%;
-  display: flex; flex-direction: column; overflow: hidden;
-  border-radius: 5px; border: 2px solid #f5f9ff;
-  background: #071632; box-shadow: 0 1px 7px #15263a65;
+  /* Treat the thumbnail as the entire N64 sticker, not a picture sitting
+     above a YouTube banner. Crop edge-to-edge into the shell's label recess. */
+  position: absolute; left: 25.4%; right: 25.4%; top: 17.4%; bottom: 16.4%;
+  display: block; overflow: hidden;
+  border-radius: 5px 5px 4px 4px;
+  border: 0;
+  background: #071632; box-shadow: inset 0 0 0 1px #e7edf7b3;
   transition: transform .2s;
 }
 .cartridge-link:hover .cartridge-label-area,
 .cartridge-link:focus-visible .cartridge-label-area { transform: translateY(-3px); }
-.cartridge-picture { display: block; width: 100%; flex: 1; min-height: 0; overflow: hidden; }
-.cartridge-picture img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.cartridge-platform {
-  display: flex; justify-content: center; align-items: center;
-  gap: 5px; flex: 0 0 25%; min-height: 25px; padding: 2px;
-  background: #071327; color: #fff; font-size: .7rem;
-  letter-spacing: .02em; font-weight: 750; line-height: 1.1;
+.cartridge-picture {
+  display: block; position: absolute; inset: 0;
+  width: 100%; height: 100%; overflow: hidden;
 }
-.cartridge-platform img { width: 24px; height: auto; }
+.cartridge-picture img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+}
 .cartridge-description { padding: 12px 5px 0; text-align: center; }
 .cartridge-description .eyebrow { font-size: .61rem; margin-bottom: 6px; }
 .cartridge-description h3 { font-size: 1.05rem; line-height: 1.32; color: var(--fur); }
@@ -559,7 +561,7 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 }
 .library-card:hover,.library-card:focus-within {border-color:var(--ice);}
 .library-card .cartridge-link {width:min(100%,260px);}
-.library-card .cartridge-label-area {border-width:1px;}
+.library-card .cartridge-label-area {border:0;}
 .library-card-copy {padding:10px 7px 0;}
 .library-card-copy h3 {
   font-size:.93rem;line-height:1.4;overflow-wrap:anywhere;color:var(--white);
@@ -609,8 +611,10 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   box-shadow:inset 0 1px 3px #000,inset 0 -1px 1px #7776;
 }
 .boot-cartridge {
+  /* Nearly the physical dust-slot width (42.95%). Larger than before,
+     while still fitting completely inside the opening. */
   position:absolute;z-index:3;left:50%;top:-32%;
-  width:34%;aspect-ratio:1231/794;pointer-events:none;
+  width:42%;aspect-ratio:1231/794;pointer-events:none;
   transform:translateX(-50%);clip-path:inset(0 0 0 0);
 }
 .boot-scene.boot-inserting .boot-cartridge {
@@ -622,7 +626,7 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 .boot-cartridge .cartridge-shell,.boot-cartridge > img {
   width:100%;height:100%;object-fit:contain;
 }
-.boot-cartridge .cartridge-label-area {border-width:1px;}
+.boot-cartridge .cartridge-label-area {border:0;}
 /* Front console image covers anything that passes below the rim.
    This establishes a real occlusion plane rather than a floating sticker. */
 .boot-console-front {z-index:4;clip-path:inset(29.7% 0 0 0);}
@@ -643,13 +647,26 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   transform:perspective(160px) rotateX(-78deg) translateY(3px);
   filter:brightness(.45);
 }
+/* The real POWER-labelled rocker is a transparent sprite cropped from
+   the approved console render. The shadowed well hides the static
+   switch under it so the entire moving part rocks together. */
+.boot-power-switch-well {
+  position:absolute;z-index:6;
+  left:19.65%;top:42.35%;width:8.75%;height:15.1%;
+  border-radius:45% 42% 41% 43%;
+  background:linear-gradient(160deg,#151517,#222326 45%,#080809);
+  box-shadow:inset 0 2px 4px #050506,inset 1px 0 2px #050506,
+             0 0 1px 1px #66686b67;
+  pointer-events:none;
+}
 .boot-power-switch {
-  position:absolute;z-index:6;left:22%;top:49.1%;
-  width:5.7%;height:3.5%;border-radius:38%;
-  border:1px solid #090b10;
-  background:linear-gradient(#777982,#373943 65%,#1b1d23);
-  box-shadow:inset 0 1px 2px #dddddd78,0 1px 2px #0a1017;
-  transform:translateY(3px);transition:transform .17s ease;
+  position:absolute;z-index:7;
+  left:20.165%;top:45.3%;width:7.46%;height:11.79%;
+  object-fit:contain;pointer-events:none;
+  transform-origin:50% 45%;
+  transform:translateY(0) rotateX(0deg);
+  filter:drop-shadow(0 2px 1px #08080acc);
+  transition:transform .19s cubic-bezier(.2,.8,.25,1);
 }
 .boot-power-led {
   position:absolute;z-index:6;left:47.3%;top:75.7%;
@@ -658,9 +675,13 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   box-shadow:0 0 6px 3px #fb1426bc,0 0 18px 9px #ff172f6b;
   transition:opacity .08s linear;
 }
-.boot-scene.boot-powered .boot-power-switch {transform:translateY(-5px);}
+.boot-scene.boot-powered .boot-power-switch {
+  transform:translateY(-19%) rotateX(-10deg);
+}
 .boot-scene.boot-powered .boot-power-led {opacity:1;}
-.boot-scene.boot-powered-off .boot-power-switch {transform:translateY(3px);}
+.boot-scene.boot-powered-off .boot-power-switch {
+  transform:translateY(0) rotateX(0deg);
+}
 .boot-scene.boot-powered-off .boot-power-led {opacity:0;}
 .boot-scene.boot-eject .boot-cartridge {
   animation:boot-eject .68s cubic-bezier(.16,.84,.21,1) both;
@@ -704,7 +725,6 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
   .boot-scene{height:180px;min-height:150px;}
   .boot-caption{letter-spacing:.08em;font-size:.58rem;}
   .boot-console-visual{bottom:14px;}
-  .boot-power-switch{border-width:0;}
   .boot-caption a{font-size:.77rem;padding:8px 10px;}
 }
 @media(prefers-reduced-motion:reduce){
