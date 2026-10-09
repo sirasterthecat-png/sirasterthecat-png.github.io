@@ -27,3 +27,9 @@ The [Game Library](https://sirasterthecat-png.github.io/library.html) is a separ
 - The YouTube badge and its dark strip are removed from both homepage and library cartridge stickers. One real YouTube thumbnail is cropped with `object-fit: cover` to fill the label niche edge-to-edge, including during the animated cartridge insertion. Animation clones request image resources eagerly rather than inheriting delayed lazy loading.
 - The animated cartridge width is 42% of the N64 console artwork, up from 34%; this remains just under the approximately 42.95%-wide slot opening.
 - The decorative power-switch nub has been replaced by a cropped sprite from the original approved N64 render (`assets/n64-power-rocker.webp`). The *whole* POWER-labelled rocker moves inside a masked dark switch well. LED and popup logic are unchanged.
+
+## N64 ON/OFF source art (2026-10-09)
+
+- The transparent user-approved N64 ON render is stored at `assets/n64-console-on.webp`; the original console OFF asset remains `assets/n64-console-front.webp`.
+- Only the ON render's power-switch and red LED regions are alpha-masked and cross-faded over the stationary OFF console. This preserves the background and avoids mismatched shapes jumping during a full-console swap.
+- The cartridge remains at the user-approved quarter-depth seat (`top:7%`, `clip-path:inset(0 0 25% 0)`); the flap, popup fallback, and reverse animation are unchanged.

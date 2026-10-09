@@ -5,6 +5,7 @@
   const PLAYLIST_ID = /^PL[A-Za-z0-9_-]{10,55}$/;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const CONSOLE_ASSET = 'assets/n64-console-front.webp';
+  const CONSOLE_ON_ASSET = 'assets/n64-console-on.webp';
   const TIMING = Object.freeze({
     powerOn: 1200,
     launch: 1700,  // The "game ready" beat, half a second after power-on.
@@ -15,6 +16,8 @@
   // Preload the approved console art while the visitor is browsing.
   const consolePreload = new Image();
   consolePreload.src = CONSOLE_ASSET;
+  const poweredPreload = new Image();
+  poweredPreload.src = CONSOLE_ON_ASSET;
 
   function playlistWatchURL(playlist, firstVideoId) {
     if (!PLAYLIST_ID.test(playlist) || !VIDEO_ID.test(firstVideoId)) return null;
@@ -76,10 +79,15 @@
     // The flap itself is a pixel-accurate CSS crop of the approved light-gray
     // slot cover, animated as a small downward-folding hinged piece.
     const flap = element('span', 'boot-slot-flap');
-    // Move the actual power-rocker artwork, including its POWER label,
-    // rather than shifting an artificial tab across the stationary switch.
-    const led = element('span', 'boot-power-led');
-    consoleElement.append(rear, cavity, cartridge, front, flap, led);
+    // Two images: the current OFF render remains the fixed console shell.
+    // Only the switch and LED regions of the approved ON render become
+    // visible. The CSS mask prevents the rest of the console from jumping.
+    const powerState = element('img', 'boot-console-on');
+    powerState.src = CONSOLE_ON_ASSET;
+    powerState.alt = '';
+    powerState.width = 700;
+    powerState.height = 525;
+    consoleElement.append(rear, cavity, cartridge, front, flap, powerState);
     const caption = element('p', 'boot-caption');
     caption.textContent = 'INSERTING CARTRIDGE...';
     scene.append(consoleElement, caption);

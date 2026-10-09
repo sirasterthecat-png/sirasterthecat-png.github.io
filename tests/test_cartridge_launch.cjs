@@ -154,7 +154,7 @@ test('Reduced motion uses the normal link without animation or scripted popup',(
   assert.equal(h.find('cartridge-boot-overlay'),null);
 });
 test('Original N64 art is stacked around the centered cartridge and dust flap',()=>{
-  assert.match(js,/consoleElement\.append\(rear, cavity, cartridge, front, flap,\s*switchWell, switchEl, led\)/);
+  assert.match(js,/consoleElement\.append\(rear, cavity, cartridge, front, flap, powerState\)/);
   assert.match(css,/\.boot-console-back\s*\{z-index:1;/);
   assert.match(css,/\.boot-cartridge\s*\{[^}]*z-index:3;left:50%/s);
   assert.match(css,/\.boot-cartridge\s*\{[^}]*width:42%/s);
@@ -165,7 +165,7 @@ test('Original N64 art is stacked around the centered cartridge and dust flap',(
 test('Cartridge enters and ejects vertically with no tilt or diagonal drift',()=>{
   const frame=css.slice(css.indexOf('@keyframes boot-seat'),css.indexOf('@media(max-width:1050px)'));
   assert.doesNotMatch(frame,/rotate\s*\(/);
-  assert.match(frame,/100% \\{top:21\\.5%;transform:translateX\\(-50%\\);clip-path:inset\\(0 0 76% 0\\)/);
+  assert.match(frame,/100% \{top:7%;transform:translateX\(-50%\);clip-path:inset\(0 0 25% 0\)/);
   assert.match(frame,/100% \{top:-32%;transform:translateX\(-50%\);clip-path:inset\(0 0 0 0\)/);
 });
 
@@ -174,7 +174,7 @@ test('Full-size cropped thumbnails survive cloning with eager image loading',()=
   assert.match(js,/img\.src = sources\[i\]\.currentSrc/);
   assert.match(css,/\.cartridge-picture img\s*\{[^}]*object-fit: cover/s);
   assert.doesNotMatch(css,/\.cartridge-platform\s*\{/);
-  assert.match(js,/assets\/n64-power-rocker\.webp/);
-  assert.match(css,/\.boot-power-switch-well\s*\{/);
-  assert.match(css,/\.boot-scene\.boot-powered \.boot-power-switch\s*\{[^}]*translateY\(-19%\)/s);
+  assert.match(js,/assets\/n64-console-on\.webp/);
+  assert.match(css,/\.boot-console-on\s*\{[^}]*mask-image:/s);
+  assert.match(css,/\.boot-scene\.boot-powered \.boot-console-on \{opacity:1;\}/);
 });
