@@ -1,0 +1,35 @@
+name: Sanitize public Git author email (one-time)
+on:
+  push:
+    paths:
+      - .github/workflows/sanitize-author-history.yml
+permissions:
+  contents: write
+jobs:
+  sanitize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Rewrite public branch histories without changing site files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git clone --no-single-branch "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" site
+          cd site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          git checkout main
+          git rm .github/workflows/sanitize-author-history.yml
+          git commit -m "Remove completed one-time privacy maintenance workflow"
+          python -m pip install --quiet git-filter-repo
+          git filter-repo --force --email-callback 'return b"noreply@users.noreply.github.com" if email.lower() == b"sirasterthecat@gmail.com" else email' --name-callback 'return name'
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for branch in main feature/asterdab-cartridge-welcome feature/live-youtube-twitch-previews feature/png-cartridge-logos feature/separate-video-shorts-feeds; do
+            if [ "$branch" != main ]; then
+              git branch -f "$branch" "refs/remotes/origin/$branch"
+            fi
+            git push --force origin "$branch:refs/heads/$branch"
+          done
+          echo "Sanitized five public branch heads. GitHub PR refs and cached commit objects may persist."
