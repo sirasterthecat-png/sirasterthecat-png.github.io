@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-09T15:47:25+00:00",
+  "updatedAt": "2026-10-10T18:54:44+00:00",
   "longform": [
     {
       "id": "sT20SAAtGvo",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "q1Ff8un7Xr4",
+      "title": "Birth Me Bomber Man",
+      "published": "2026-10-10T15:00:33+00:00",
+      "url": "https://www.youtube.com/shorts/q1Ff8un7Xr4",
+      "thumbnail": "https://i.ytimg.com/vi/q1Ff8un7Xr4/oar2.jpg"
+    },
+    {
       "id": "aJ-vOMcnV48",
       "title": "What Glitch Is That",
       "published": "2026-10-09T15:00:37+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-05T15:00:23+00:00",
       "url": "https://www.youtube.com/shorts/c58Wmid1WHo",
       "thumbnail": "https://i.ytimg.com/vi/c58Wmid1WHo/oar2.jpg"
-    },
-    {
-      "id": "4L4-7wHLmJ8",
-      "title": "Why Is There So Much Color",
-      "published": "2026-10-04T15:00:10+00:00",
-      "url": "https://www.youtube.com/shorts/4L4-7wHLmJ8",
-      "thumbnail": "https://i.ytimg.com/vi/4L4-7wHLmJ8/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
