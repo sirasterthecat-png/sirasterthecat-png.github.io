@@ -160,10 +160,6 @@
     shine.className = 'video-thumb-shine';
     shine.setAttribute('aria-hidden', 'true');
     media.appendChild(shine);
-    const hint = document.createElement('span');
-    hint.className = 'video-preview-hint';
-    hint.textContent = 'Preview · muted';
-    media.appendChild(hint);
     attachPreview(media, video);
 
     const copy = document.createElement('div');
