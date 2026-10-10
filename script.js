@@ -90,8 +90,12 @@
     const staticFeedback = reducedMotion.matches;
     const pulse = document.createElement('span');
     pulse.className = staticFeedback ? 'tap-pulse tap-pulse-static' : 'tap-pulse';
-    pulse.style.left = `${x}px`;
-    pulse.style.top = `${y}px`;
+    // Event client coordinates and fixed overlays can use different origins
+    // when iOS Safari pinch-zooms or pans the visual viewport. Resolve the
+    // tap against the overlay's actual on-screen bounding rectangle.
+    const bounds = pulseLayer.getBoundingClientRect();
+    pulse.style.left = `${x - bounds.left}px`;
+    pulse.style.top = `${y - bounds.top}px`;
     pulse.addEventListener('animationend', () => removePulse(pulse), { once: true });
     pulseLayer.appendChild(pulse);
     pulses.set(pulse, window.setTimeout(() => removePulse(pulse), staticFeedback ? 250 : 700));
