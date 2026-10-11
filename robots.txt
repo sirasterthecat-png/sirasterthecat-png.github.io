@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://sirasterthecat-png.github.io/sitemap.xml
+Sitemap: https://sirasterthecat.men/sitemap.xml

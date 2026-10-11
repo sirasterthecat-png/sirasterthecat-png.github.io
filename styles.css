@@ -725,3 +725,13 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 }
 .adventure-library-cta .button{font-size:.8rem;}
 @media(max-width:680px){.adventure-library-cta{justify-content:center;text-align:center;}}
+
+/* Compact, fully crawlable playlist index; the established cartridge grid is unchanged. */
+.library-directory { margin-top:22px;padding:15px 2px 3px;border-top:1px solid #6face249;color:var(--copy); }
+.library-directory summary { cursor:pointer;color:var(--ice);font-weight:700;font-size:.9rem;padding:9px 6px; }
+.library-directory summary:focus-visible { outline:2px solid var(--ice);outline-offset:4px; }
+.library-directory p { margin:11px 6px;color:var(--copy);font-size:.85rem;line-height:1.5; }
+.library-directory ol { display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px 22px;margin:16px 6px;padding-left:24px; }
+.library-directory li { min-width:0;font-size:.87rem;line-height:1.5; }
+.library-directory li a { color:var(--ice);overflow-wrap:anywhere;text-underline-offset:3px; }
+.library-directory li span { color:var(--copy);font-size:.77rem;white-space:nowrap; }

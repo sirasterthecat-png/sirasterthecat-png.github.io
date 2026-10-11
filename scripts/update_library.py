@@ -7,6 +7,7 @@ ahead of the initial (approximate, tab-ordered) baseline. YouTube does not
 expose a reliable per-item playlist-add timestamp for this use case.
 """
 import json
+from html import escape
 import os
 import re
 import tempfile
@@ -150,6 +151,64 @@ def crawl_playlist(pid):
     return video_ids_from_listing(data)
 
 
+# A crawler-readable directory remains available in library.html without JS.
+LIBRARY_HTML = OUTPUT.parent.parent / "library.html"
+INDEX_START = "<!-- BEGIN CRAWLABLE PLAYLIST INDEX -->"
+INDEX_END = "<!-- END CRAWLABLE PLAYLIST INDEX -->"
+
+
+def render_playlist_directory(playlists):
+    ordered = sorted(
+        (
+            p for p in playlists
+            if isinstance(p, dict) and PLAYLIST_ID.fullmatch(p.get("id") or "")
+            and isinstance(p.get("title"), str) and p["title"].strip()
+            and isinstance(p.get("episodeCount"), int) and p["episodeCount"] >= 0
+        ),
+        key=lambda p: p["title"].lower()
+    )
+    lines = [
+        '        <details class="library-directory">',
+        f'          <summary>All public playlists ({len(ordered)}) — alphabetical index</summary>',
+        '          <p>This complete playlist directory is also available without JavaScript. Select any game or series to open its official YouTube playlist.</p>',
+        '          <ol>',
+    ]
+    for item in ordered:
+        count = item["episodeCount"]
+        unit = "video" if count == 1 else "videos"
+        lines.append(
+            '            <li><a href="https://www.youtube.com/playlist?list='
+            + item["id"]
+            + '" target="_blank" rel="noopener noreferrer">'
+            + escape(item["title"])
+            + f'</a> <span>({count} {unit})</span></li>'
+        )
+    lines += ["          </ol>", "        </details>"]
+    return "\n".join(lines)
+
+
+def sync_playlist_index(playlists, page=LIBRARY_HTML):
+    """Update exactly one bounded HTML region; preserve the existing UI."""
+    original = page.read_text(encoding="utf-8")
+    if original.count(INDEX_START) != 1 or original.count(INDEX_END) != 1:
+        raise ValueError("Playlist directory markers missing or duplicated")
+    start = original.index(INDEX_START) + len(INDEX_START)
+    end = original.index(INDEX_END)
+    if end < start:
+        raise ValueError("Playlist directory markers out of order")
+    replacement = "\n" + render_playlist_directory(playlists) + "\n        "
+    updated = original[:start] + replacement + original[end:]
+    if updated == original:
+        return False
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", suffix=".html", delete=False, dir=page.parent
+    ) as handle:
+        handle.write(updated)
+        temp_path = handle.name
+    os.replace(temp_path, page)
+    return True
+
+
 def refresh():
     try:
         previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
@@ -172,6 +231,7 @@ def refresh():
     if not previous and not any(r["firstVideoId"] for r in catalog):
         raise ValueError("No playlist contents could be verified")
     if previous.get("playlists") == catalog:
+        sync_playlist_index(catalog)
         print(f"Catalog unchanged: {len(catalog)} public playlists")
         return
     payload = {
@@ -188,6 +248,7 @@ def refresh():
         handle.write("\n")
         tmpname = handle.name
     os.replace(tmpname, OUTPUT)
+    sync_playlist_index(catalog)
     print(f"Saved all {len(catalog)} public playlists ({len(failures)} refresh errors)")
 
 

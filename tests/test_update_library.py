@@ -8,7 +8,7 @@ try:
 except ImportError:
     sys.modules["yt_dlp"] = types.SimpleNamespace(YoutubeDL=object)
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
-from update_library import make_record,merge_catalog,video_ids_from_listing
+from update_library import make_record,merge_catalog,video_ids_from_listing,render_playlist_directory,sync_playlist_index
 PID_A="PLAL-C7T4V304"
 PID_B="PLXzmVuZyTD88"
 A={"id":PID_A,"title":"Rocket League","thumbnails":[{"url":"https://i.ytimg.com/vi/sT20SAAtGvo/hqdefault.jpg"}]}
@@ -46,5 +46,31 @@ class LibraryTests(unittest.TestCase):
         self.assertEqual((len(result),errors,result[1]["episodeCount"]),(2,[],0))
     def test_membership_deduplicates_invalid_entries(self):
         self.assertEqual(video_ids_from_listing({"entries":[{"id":V1},{"id":V1},{"id":"bad"},None,{"id":V2}]}),[V1,V2])
+
+    def test_crawlable_directory_lists_every_playlist_and_escapes_markup(self):
+        items = [
+            {"id": PID_A, "title": "Zelda & Friends <Fun>", "episodeCount": 2},
+            {"id": PID_B, "title": "Alpha's adventures", "episodeCount": 1},
+        ]
+        fragment = render_playlist_directory(items)
+        self.assertEqual(fragment.count("<li>"), 2)
+        self.assertIn("Zelda &amp; Friends &lt;Fun&gt;", fragment)
+        self.assertIn("Alpha&#x27;s adventures", fragment)
+        self.assertLess(fragment.index("Alpha"), fragment.index("Zelda"))
+        self.assertIn("https://www.youtube.com/playlist?list=" + PID_B, fragment)
+
+    def test_directory_sync_is_bounded_and_idempotent(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as root:
+            page = Path(root) / "library.html"
+            page.write_text("HEADER\n" + "<!-- BEGIN CRAWLABLE PLAYLIST INDEX -->"
+                            + "\nold\n" + "<!-- END CRAWLABLE PLAYLIST INDEX -->"
+                            + "\nFOOTER", encoding="utf-8")
+            rows = [{"id": PID_A, "title": "Rocket League", "episodeCount": 2}]
+            self.assertTrue(sync_playlist_index(rows, page))
+            self.assertFalse(sync_playlist_index(rows, page))
+            self.assertIn("HEADER", page.read_text())
+            self.assertIn("FOOTER", page.read_text())
+
 if __name__=="__main__":
     unittest.main()
