@@ -1,7 +1,14 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-10T18:54:44+00:00",
+  "updatedAt": "2026-10-11T18:48:39+00:00",
   "longform": [
+    {
+      "id": "Hkv8kCuPLEk",
+      "title": "Dancing in the Dark!! | The Forest Ep 3",
+      "published": "2026-10-11T15:00:09+00:00",
+      "url": "https://www.youtube.com/watch?v=Hkv8kCuPLEk",
+      "thumbnail": "https://i.ytimg.com/vi/Hkv8kCuPLEk/hqdefault.jpg"
+    },
     {
       "id": "sT20SAAtGvo",
       "title": "Kicking off with ROCKET LEAGUE!! | Rocket League Ep 1",
@@ -36,16 +43,16 @@
       "published": null,
       "url": "https://www.youtube.com/watch?v=3IeobsUDlrE",
       "thumbnail": "https://i.ytimg.com/vi/3IeobsUDlrE/hqdefault.jpg"
-    },
-    {
-      "id": "kCQ3QjBGdnQ",
-      "title": "FALL GUYS IN 2026?? | Fall Guys Ep 1",
-      "published": null,
-      "url": "https://www.youtube.com/watch?v=kCQ3QjBGdnQ",
-      "thumbnail": "https://i.ytimg.com/vi/kCQ3QjBGdnQ/hqdefault.jpg"
     }
   ],
   "shorts": [
+    {
+      "id": "RZZpSs0dJDg",
+      "title": "What Does Hubby Mean",
+      "published": "2026-10-11T15:00:40+00:00",
+      "url": "https://www.youtube.com/shorts/RZZpSs0dJDg",
+      "thumbnail": "https://i.ytimg.com/vi/RZZpSs0dJDg/oar2.jpg"
+    },
     {
       "id": "q1Ff8un7Xr4",
       "title": "Birth Me Bomber Man",
@@ -80,19 +87,12 @@
       "published": "2026-10-06T15:00:39+00:00",
       "url": "https://www.youtube.com/shorts/ZuThq6tpTUY",
       "thumbnail": "https://i.ytimg.com/vi/ZuThq6tpTUY/oar2.jpg"
-    },
-    {
-      "id": "c58Wmid1WHo",
-      "title": "Why Are We Here",
-      "published": "2026-10-05T15:00:23+00:00",
-      "url": "https://www.youtube.com/shorts/c58Wmid1WHo",
-      "thumbnail": "https://i.ytimg.com/vi/c58Wmid1WHo/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
-    "id": "PLAL-C7T4V304",
-    "title": "Rocket League",
-    "url": "https://www.youtube.com/playlist?list=PLAL-C7T4V304",
-    "thumbnailVideoId": "sT20SAAtGvo"
+    "id": "PLWCCtmHOGjuo",
+    "title": "The Forest",
+    "url": "https://www.youtube.com/playlist?list=PLWCCtmHOGjuo",
+    "thumbnailVideoId": "iolIHEC9miw"
   }
 }
