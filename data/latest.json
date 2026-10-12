@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-11T18:48:39+00:00",
+  "updatedAt": "2026-10-12T17:45:54+00:00",
   "longform": [
     {
       "id": "Hkv8kCuPLEk",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "YvFZYPw5XI0",
+      "title": "The Mountains Are Judging",
+      "published": "2026-10-12T15:00:39+00:00",
+      "url": "https://www.youtube.com/shorts/YvFZYPw5XI0",
+      "thumbnail": "https://i.ytimg.com/vi/YvFZYPw5XI0/oar2.jpg"
+    },
+    {
       "id": "RZZpSs0dJDg",
       "title": "What Does Hubby Mean",
       "published": "2026-10-11T15:00:40+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-07T15:00:17+00:00",
       "url": "https://www.youtube.com/shorts/wHrcknl1WK8",
       "thumbnail": "https://i.ytimg.com/vi/wHrcknl1WK8/oar2.jpg"
-    },
-    {
-      "id": "ZuThq6tpTUY",
-      "title": "Please Don't Clip It",
-      "published": "2026-10-06T15:00:39+00:00",
-      "url": "https://www.youtube.com/shorts/ZuThq6tpTUY",
-      "thumbnail": "https://i.ytimg.com/vi/ZuThq6tpTUY/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
