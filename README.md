@@ -34,3 +34,9 @@ Add a Twitch server-side live-status service only if a securely stored Twitch ap
 - The hourly playlist updater writes the crawlable directory into `library/index.html`. Its workflow commits that file alongside `data/series.json`.
 - The software page is still a private development draft; `/software/` is reserved for its future approved launch.
 - Nested static HTML pages use `<base href="/">` to preserve shared images, scripts, styles and feed fetches in the site root.
+
+## Software catalog
+- Published at `/software/` with Facet and StreamCut Studio listed as in development, not downloadable yet.
+- The top navigation includes Software on the homepage and Game Library, with the active page indicated on the software page.
+- Homepage Patreon account strip uses the official, locally hosted symbol from Patreon's brand guidelines (`assets/patreon-symbol.png`) in place of the former heart character.
+- Software content is ported from an approved private development draft, not a deployment of the private repository or its artwork/private history.
