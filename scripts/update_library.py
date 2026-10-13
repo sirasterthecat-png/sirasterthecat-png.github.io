@@ -151,8 +151,8 @@ def crawl_playlist(pid):
     return video_ids_from_listing(data)
 
 
-# A crawler-readable directory remains available in library.html without JS.
-LIBRARY_HTML = OUTPUT.parent.parent / "library.html"
+# A crawler-readable directory remains available in library/index.html without JS.
+LIBRARY_HTML = OUTPUT.parent.parent / "library" / "index.html"
 INDEX_START = "<!-- BEGIN CRAWLABLE PLAYLIST INDEX -->"
 INDEX_END = "<!-- END CRAWLABLE PLAYLIST INDEX -->"
 
