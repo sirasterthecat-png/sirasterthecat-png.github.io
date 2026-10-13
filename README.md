@@ -1,6 +1,6 @@
 # SirAsterTheCat — Official Website
 
-Live site: **https://sirasterthecat-png.github.io/**
+Live site: **https://sirasterthecat.men/**
 
 The **public deployment** of Aster's starry-night gaming homepage, based on the ghost-glass design refined by Charlie. The separate collaborative development repository is private.
 
@@ -27,3 +27,10 @@ The original files `assets/SirAsterCompressed.png` and `assets/AsterHappy.PNG` a
 
 ## Next improvements
 Add a Twitch server-side live-status service only if a securely stored Twitch app credential and backend are approved. Further tune previews against physical iPhones and Apple Safari.
+
+## Friendly page URLs
+- Home: `/`, with no unnecessary `#top` fragment in home/brand links.
+- Game Library: `/library/` (served by `library/index.html`). Existing `/library.html` links are retained as an HTML redirect to the new URL.
+- The hourly playlist updater writes the crawlable directory into `library/index.html`. Its workflow commits that file alongside `data/series.json`.
+- The software page is still a private development draft; `/software/` is reserved for its future approved launch.
+- Nested static HTML pages use `<base href="/">` to preserve shared images, scripts, styles and feed fetches in the site root.
