@@ -62,7 +62,8 @@ class LibraryTests(unittest.TestCase):
     def test_directory_sync_is_bounded_and_idempotent(self):
         import tempfile
         with tempfile.TemporaryDirectory() as root:
-            page = Path(root) / "library.html"
+            page = Path(root) / "library" / "index.html"
+            page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text("HEADER\n" + "<!-- BEGIN CRAWLABLE PLAYLIST INDEX -->"
                             + "\nold\n" + "<!-- END CRAWLABLE PLAYLIST INDEX -->"
                             + "\nFOOTER", encoding="utf-8")
