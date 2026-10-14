@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-13T18:32:04+00:00",
+  "updatedAt": "2026-10-14T17:32:11+00:00",
   "longform": [
     {
       "id": "okvG4I_7zSU",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "dSMV4-HEhNA",
+      "title": "F You Babe That Was So Close",
+      "published": "2026-10-14T15:00:00+00:00",
+      "url": "https://www.youtube.com/shorts/dSMV4-HEhNA",
+      "thumbnail": "https://i.ytimg.com/vi/dSMV4-HEhNA/oar2.jpg"
+    },
+    {
       "id": "MO12CyewKpA",
       "title": "We’re Effectively Cheating",
       "published": "2026-10-13T15:00:39+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-09T15:00:37+00:00",
       "url": "https://www.youtube.com/shorts/aJ-vOMcnV48",
       "thumbnail": "https://i.ytimg.com/vi/aJ-vOMcnV48/oar2.jpg"
-    },
-    {
-      "id": "gHIVJ1O2zio",
-      "title": "Let's Go Get Some Hookers",
-      "published": "2026-10-08T15:00:36+00:00",
-      "url": "https://www.youtube.com/shorts/gHIVJ1O2zio",
-      "thumbnail": "https://i.ytimg.com/vi/gHIVJ1O2zio/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
