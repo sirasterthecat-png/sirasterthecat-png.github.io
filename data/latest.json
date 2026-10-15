@@ -1,7 +1,14 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-14T17:32:11+00:00",
+  "updatedAt": "2026-10-15T17:23:58+00:00",
   "longform": [
+    {
+      "id": "IZyOjMNX5EQ",
+      "title": "One With Nature | The Forest Ep 4",
+      "published": "2026-10-15T15:00:03+00:00",
+      "url": "https://www.youtube.com/watch?v=IZyOjMNX5EQ",
+      "thumbnail": "https://i.ytimg.com/vi/IZyOjMNX5EQ/hqdefault.jpg"
+    },
     {
       "id": "okvG4I_7zSU",
       "title": "Becoming a King | Rocket League Ep 2",
@@ -36,16 +43,16 @@
       "published": "2026-09-29T15:00:11+00:00",
       "url": "https://www.youtube.com/watch?v=mNY3hBC2tjU",
       "thumbnail": "https://i.ytimg.com/vi/mNY3hBC2tjU/hqdefault.jpg"
-    },
-    {
-      "id": "N5HT9HtczDI",
-      "title": "Settling In~ | The Forest Ep 2",
-      "published": "2026-09-25T15:00:22+00:00",
-      "url": "https://www.youtube.com/watch?v=N5HT9HtczDI",
-      "thumbnail": "https://i.ytimg.com/vi/N5HT9HtczDI/hqdefault.jpg"
     }
   ],
   "shorts": [
+    {
+      "id": "q7FiLfDqi2Y",
+      "title": "No One Witnessed This",
+      "published": "2026-10-15T15:00:28+00:00",
+      "url": "https://www.youtube.com/shorts/q7FiLfDqi2Y",
+      "thumbnail": "https://i.ytimg.com/vi/q7FiLfDqi2Y/oar2.jpg"
+    },
     {
       "id": "dSMV4-HEhNA",
       "title": "F You Babe That Was So Close",
@@ -80,19 +87,12 @@
       "published": "2026-10-10T15:00:33+00:00",
       "url": "https://www.youtube.com/shorts/q1Ff8un7Xr4",
       "thumbnail": "https://i.ytimg.com/vi/q1Ff8un7Xr4/oar2.jpg"
-    },
-    {
-      "id": "aJ-vOMcnV48",
-      "title": "What Glitch Is That",
-      "published": "2026-10-09T15:00:37+00:00",
-      "url": "https://www.youtube.com/shorts/aJ-vOMcnV48",
-      "thumbnail": "https://i.ytimg.com/vi/aJ-vOMcnV48/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
-    "id": "PLAL-C7T4V304",
-    "title": "Rocket League",
-    "url": "https://www.youtube.com/playlist?list=PLAL-C7T4V304",
-    "thumbnailVideoId": "sT20SAAtGvo"
+    "id": "PLWCCtmHOGjuo",
+    "title": "The Forest",
+    "url": "https://www.youtube.com/playlist?list=PLWCCtmHOGjuo",
+    "thumbnailVideoId": "iolIHEC9miw"
   }
 }
