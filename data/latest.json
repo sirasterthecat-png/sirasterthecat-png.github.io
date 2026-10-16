@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-15T17:23:58+00:00",
+  "updatedAt": "2026-10-16T15:29:25+00:00",
   "longform": [
     {
       "id": "IZyOjMNX5EQ",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "easIWG78668",
+      "title": "Brain Slipping Out",
+      "published": "2026-10-16T15:00:12+00:00",
+      "url": "https://www.youtube.com/shorts/easIWG78668",
+      "thumbnail": "https://i.ytimg.com/vi/easIWG78668/oar2.jpg"
+    },
+    {
       "id": "q7FiLfDqi2Y",
       "title": "No One Witnessed This",
       "published": "2026-10-15T15:00:28+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-11T15:00:40+00:00",
       "url": "https://www.youtube.com/shorts/RZZpSs0dJDg",
       "thumbnail": "https://i.ytimg.com/vi/RZZpSs0dJDg/oar2.jpg"
-    },
-    {
-      "id": "q1Ff8un7Xr4",
-      "title": "Birth Me Bomber Man",
-      "published": "2026-10-10T15:00:33+00:00",
-      "url": "https://www.youtube.com/shorts/q1Ff8un7Xr4",
-      "thumbnail": "https://i.ytimg.com/vi/q1Ff8un7Xr4/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
