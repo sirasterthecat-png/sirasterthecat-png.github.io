@@ -1,7 +1,14 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-17T15:52:20+00:00",
+  "updatedAt": "2026-10-17T18:22:49+00:00",
   "longform": [
+    {
+      "id": "19O1TCxoPHQ",
+      "title": "GIRL BROS!!! | Perfect Dark CO-OP Ep 1",
+      "published": "2026-10-17T17:00:21+00:00",
+      "url": "https://www.youtube.com/watch?v=19O1TCxoPHQ",
+      "thumbnail": "https://i.ytimg.com/vi/19O1TCxoPHQ/hqdefault.jpg"
+    },
     {
       "id": "IZyOjMNX5EQ",
       "title": "One With Nature | The Forest Ep 4",
@@ -36,13 +43,6 @@
       "published": "2026-10-07T17:00:30+00:00",
       "url": "https://www.youtube.com/watch?v=5BsV3A75U0A",
       "thumbnail": "https://i.ytimg.com/vi/5BsV3A75U0A/hqdefault.jpg"
-    },
-    {
-      "id": "mNY3hBC2tjU",
-      "title": "Off in the Great Beyond... | No Man's Sky Ep 5",
-      "published": "2026-09-29T15:00:11+00:00",
-      "url": "https://www.youtube.com/watch?v=mNY3hBC2tjU",
-      "thumbnail": "https://i.ytimg.com/vi/mNY3hBC2tjU/hqdefault.jpg"
     }
   ],
   "shorts": [
@@ -90,9 +90,9 @@
     }
   ],
   "featuredPlaylist": {
-    "id": "PLWCCtmHOGjuo",
-    "title": "The Forest",
-    "url": "https://www.youtube.com/playlist?list=PLWCCtmHOGjuo",
-    "thumbnailVideoId": "iolIHEC9miw"
+    "id": "PLZ5osbpETq_E",
+    "title": "Perfect Dark Co-Op",
+    "url": "https://www.youtube.com/playlist?list=PLZ5osbpETq_E",
+    "thumbnailVideoId": "19O1TCxoPHQ"
   }
 }
