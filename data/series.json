@@ -1,8 +1,21 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-11T18:14:22+00:00",
+  "updatedAt": "2026-10-17T17:24:25+00:00",
   "sortMethod": "detected_playlist_additions_then_initial_channel_order",
   "playlists": [
+    {
+      "id": "PLZ5osbpETq_E",
+      "title": "Perfect Dark Co-Op",
+      "url": "https://www.youtube.com/playlist?list=PLZ5osbpETq_E",
+      "firstVideoId": "19O1TCxoPHQ",
+      "thumbnailVideoId": "19O1TCxoPHQ",
+      "episodeCount": 1,
+      "memberIds": [
+        "19O1TCxoPHQ"
+      ],
+      "initialRank": 0,
+      "lastAdditionDetectedAt": "2026-10-17T17:24:25+00:00"
+    },
     {
       "id": "PLAL-C7T4V304",
       "title": "Rocket League",
