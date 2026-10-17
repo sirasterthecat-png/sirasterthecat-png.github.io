@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-16T15:29:25+00:00",
+  "updatedAt": "2026-10-17T15:52:20+00:00",
   "longform": [
     {
       "id": "IZyOjMNX5EQ",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "qEt_MNY1nTc",
+      "title": "Stick to Easy Stuff",
+      "published": "2026-10-17T15:00:09+00:00",
+      "url": "https://www.youtube.com/shorts/qEt_MNY1nTc",
+      "thumbnail": "https://i.ytimg.com/vi/qEt_MNY1nTc/oar2.jpg"
+    },
+    {
       "id": "easIWG78668",
       "title": "Brain Slipping Out",
       "published": "2026-10-16T15:00:12+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-12T15:00:39+00:00",
       "url": "https://www.youtube.com/shorts/YvFZYPw5XI0",
       "thumbnail": "https://i.ytimg.com/vi/YvFZYPw5XI0/oar2.jpg"
-    },
-    {
-      "id": "RZZpSs0dJDg",
-      "title": "What Does Hubby Mean",
-      "published": "2026-10-11T15:00:40+00:00",
-      "url": "https://www.youtube.com/shorts/RZZpSs0dJDg",
-      "thumbnail": "https://i.ytimg.com/vi/RZZpSs0dJDg/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
