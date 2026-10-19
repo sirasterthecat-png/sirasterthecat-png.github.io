@@ -906,3 +906,82 @@ body[data-motion="paused"] .cursor-sparkles { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .software-card-link {scroll-behavior:auto;}
 }
+
+/* Credits & Thanks: original Aster night-sky, ghost-glass presentation. */
+.credit-breadcrumb {
+  display:flex;align-items:center;gap:11px;flex-wrap:wrap;
+  margin:25px 0 17px;color:var(--muted);font-size:.82rem;
+}
+.credit-breadcrumb a {color:var(--fur);}
+.credit-breadcrumb a:hover {color:var(--ice);}
+.credit-breadcrumb [aria-current="page"] {color:var(--white);}
+.credit-section {margin-top:60px;}
+.credit-section .section-heading {margin-bottom:16px;}
+.credit-section-lead {
+  margin-bottom:25px;max-width:75ch;
+  color:var(--copy);font-size:.96rem;line-height:1.8;
+}
+.credit-grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.credit-person {
+  min-width:0;min-height:155px;padding:clamp(20px,2.6vw,30px);
+  display:flex;align-items:flex-start;gap:15px;
+  background:linear-gradient(115deg,#173d66d6,#0a213da8);
+}
+.credit-person-marker {
+  display:grid;place-items:center;flex:0 0 35px;
+  width:35px;height:35px;border:1px solid #76fff855;
+  border-radius:9px;color:var(--ice);
+  background:#102e5088;font-size:1.45rem;line-height:1;
+}
+.credit-person-copy {min-width:0;}
+.credit-person h3 {color:var(--fur);font-size:1.3rem;overflow-wrap:anywhere;}
+.credit-person .credit-role {
+  color:var(--ice);margin-top:8px;
+  font-size:.72rem;line-height:1.5;letter-spacing:.065em;text-transform:uppercase;
+}
+.credit-person .credit-description {
+  margin-top:13px;color:var(--copy);
+  font-size:.88rem;line-height:1.75;
+}
+.credit-note {
+  margin-top:16px;max-width:92ch;
+  color:var(--muted);font-size:.75rem;line-height:1.8;
+}
+.credit-thanks {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(18px,3vw,35px);
+  padding:clamp(24px,4vw,42px);margin-top:64px;margin-bottom:52px;
+  background:linear-gradient(100deg,#214978cc,#102747aa);
+}
+.credit-thanks-star {flex:0 0 auto;color:var(--ice);font-size:3.5rem;line-height:1;}
+.credit-thanks > div {min-width:0;flex:1;}
+.credit-thanks h2 {font-size:clamp(1.35rem,2.6vw,1.95rem);}
+.credit-thanks p:not(.eyebrow) {
+  color:var(--copy);font-size:.9rem;line-height:1.75;margin-top:10px;
+}
+.credit-thanks .button {flex:0 0 auto;max-width:100%;}
+.footer-links {display:flex;align-items:center;gap:15px;flex-wrap:wrap;}
+.footer-links a {
+  display:inline-flex;align-items:center;min-height:44px;
+  padding:8px 4px;text-decoration:none;color:var(--fur);
+  font-size:.83rem;font-weight:630;
+}
+.footer-links a:hover, .footer-links a[aria-current="page"] {color:var(--ice);text-decoration:underline;}
+@media (max-width:900px) {
+  .credit-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .credit-grid .credit-person:last-child:nth-child(odd) {grid-column:1 / -1;}
+  .credit-thanks {flex-wrap:wrap;}
+  .credit-thanks .button {margin-left:0;}
+}
+@media (max-width:600px) {
+  .credit-section {margin-top:44px;}
+  .credit-grid {grid-template-columns:minmax(0,1fr);}
+  .credit-grid .credit-person:last-child:nth-child(odd) {grid-column:auto;}
+  .credit-person {min-height:0;padding:21px 18px;}
+  .credit-thanks {align-items:flex-start;flex-direction:column;}
+  .credit-thanks-star {font-size:2.8rem;}
+  .credit-thanks .button {width:100%;}
+}
