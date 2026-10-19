@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-18T16:50:31+00:00",
+  "updatedAt": "2026-10-19T19:46:41+00:00",
   "longform": [
     {
       "id": "19O1TCxoPHQ",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "5f6YidDD4fA",
+      "title": "Did You Just Kidnap Me?",
+      "published": "2026-10-19T15:00:07+00:00",
+      "url": "https://www.youtube.com/shorts/5f6YidDD4fA",
+      "thumbnail": "https://i.ytimg.com/vi/5f6YidDD4fA/oar2.jpg"
+    },
+    {
       "id": "huWJaAaO7VM",
       "title": "What's the Benefit of Scanning?",
       "published": "2026-10-18T15:00:19+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-14T15:00:00+00:00",
       "url": "https://www.youtube.com/shorts/dSMV4-HEhNA",
       "thumbnail": "https://i.ytimg.com/vi/dSMV4-HEhNA/oar2.jpg"
-    },
-    {
-      "id": "MO12CyewKpA",
-      "title": "We’re Effectively Cheating",
-      "published": "2026-10-13T15:00:39+00:00",
-      "url": "https://www.youtube.com/shorts/MO12CyewKpA",
-      "thumbnail": "https://i.ytimg.com/vi/MO12CyewKpA/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
