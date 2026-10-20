@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-19T19:46:41+00:00",
+  "updatedAt": "2026-10-20T17:54:09+00:00",
   "longform": [
     {
       "id": "19O1TCxoPHQ",
@@ -47,6 +47,13 @@
   ],
   "shorts": [
     {
+      "id": "5_YwkHD4c7I",
+      "title": "I Blew Up His Ship",
+      "published": "2026-10-20T15:00:12+00:00",
+      "url": "https://www.youtube.com/shorts/5_YwkHD4c7I",
+      "thumbnail": "https://i.ytimg.com/vi/5_YwkHD4c7I/oar2.jpg"
+    },
+    {
       "id": "5f6YidDD4fA",
       "title": "Did You Just Kidnap Me?",
       "published": "2026-10-19T15:00:07+00:00",
@@ -80,13 +87,6 @@
       "published": "2026-10-15T15:00:28+00:00",
       "url": "https://www.youtube.com/shorts/q7FiLfDqi2Y",
       "thumbnail": "https://i.ytimg.com/vi/q7FiLfDqi2Y/oar2.jpg"
-    },
-    {
-      "id": "dSMV4-HEhNA",
-      "title": "F You Babe That Was So Close",
-      "published": "2026-10-14T15:00:00+00:00",
-      "url": "https://www.youtube.com/shorts/dSMV4-HEhNA",
-      "thumbnail": "https://i.ytimg.com/vi/dSMV4-HEhNA/oar2.jpg"
     }
   ],
   "featuredPlaylist": {
