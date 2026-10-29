@@ -1,6 +1,6 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-29T00:08:55+00:00",
+  "updatedAt": "2026-10-29T19:08:29+00:00",
   "sortMethod": "detected_playlist_additions_then_initial_channel_order",
   "playlists": [
     {
@@ -48,15 +48,15 @@
       "id": "PLWCCtmHOGjuo",
       "title": "The Forest",
       "url": "https://www.youtube.com/playlist?list=PLWCCtmHOGjuo",
-      "firstVideoId": "mcgSQfl7-hc",
+      "firstVideoId": "iolIHEC9miw",
       "thumbnailVideoId": "iolIHEC9miw",
       "episodeCount": 5,
       "memberIds": [
-        "mcgSQfl7-hc",
         "iolIHEC9miw",
         "N5HT9HtczDI",
         "Hkv8kCuPLEk",
-        "IZyOjMNX5EQ"
+        "IZyOjMNX5EQ",
+        "mcgSQfl7-hc"
       ],
       "initialRank": 2,
       "lastAdditionDetectedAt": "2026-10-28T19:42:31+00:00"
@@ -813,7 +813,7 @@
       "title": "Stream VODS",
       "url": "https://www.youtube.com/playlist?list=PLAgztBwa7r4LUiMZRLbjbPwC0updWyyNj",
       "firstVideoId": "mcgSQfl7-hc",
-      "thumbnailVideoId": "zodVdPyWQQU",
+      "thumbnailVideoId": "mcgSQfl7-hc",
       "episodeCount": 232,
       "memberIds": [
         "mcgSQfl7-hc",
