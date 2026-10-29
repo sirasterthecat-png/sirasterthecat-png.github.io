@@ -1,7 +1,14 @@
 {
   "channelId": "UCWnTWOcecxIeXBY5UNfw16Q",
-  "updatedAt": "2026-10-21T18:52:52+00:00",
+  "updatedAt": "2026-10-29T15:30:27+00:00",
   "longform": [
+    {
+      "id": "mcgSQfl7-hc",
+      "title": "Fighting Horrors… | The Forest Ep 5",
+      "published": "2026-10-29T15:00:04+00:00",
+      "url": "https://www.youtube.com/watch?v=mcgSQfl7-hc",
+      "thumbnail": "https://i.ytimg.com/vi/mcgSQfl7-hc/hqdefault.jpg"
+    },
     {
       "id": "19O1TCxoPHQ",
       "title": "GIRL BROS!!! | Perfect Dark CO-OP Ep 1",
@@ -36,13 +43,6 @@
       "published": "2026-10-09T15:00:33+00:00",
       "url": "https://www.youtube.com/watch?v=sT20SAAtGvo",
       "thumbnail": "https://i.ytimg.com/vi/sT20SAAtGvo/hqdefault.jpg"
-    },
-    {
-      "id": "5BsV3A75U0A",
-      "title": "Fallin' To My Knees~ | Fall Guys Ep 2",
-      "published": "2026-10-07T17:00:30+00:00",
-      "url": "https://www.youtube.com/watch?v=5BsV3A75U0A",
-      "thumbnail": "https://i.ytimg.com/vi/5BsV3A75U0A/hqdefault.jpg"
     }
   ],
   "shorts": [
@@ -90,9 +90,9 @@
     }
   ],
   "featuredPlaylist": {
-    "id": "PLZ5osbpETq_E",
-    "title": "Perfect Dark Co-Op",
-    "url": "https://www.youtube.com/playlist?list=PLZ5osbpETq_E",
-    "thumbnailVideoId": "19O1TCxoPHQ"
+    "id": "PLWCCtmHOGjuo",
+    "title": "The Forest",
+    "url": "https://www.youtube.com/playlist?list=PLWCCtmHOGjuo",
+    "thumbnailVideoId": "iolIHEC9miw"
   }
 }
